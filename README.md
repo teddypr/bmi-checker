@@ -20,4 +20,4 @@
   ボディ：ユーザーのリストを Json 形式で返す
 
 ```curl
-curl --location 'http://localhost:8080/bodyDatas'
+curl --location 'http://localhost:8080/BMIs'
