@@ -1,23 +1,21 @@
-package com.example.mybatisdemo.mapper;
+package com.health.BMI_check;
 
-import com.example.mybatisdemo.entity.Name;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Optional;
 
-@Mapper // MyBatisのMapperである⽬印として@Mapperアノテーションを付与する
-public interface NameMapper { // classではなくinterfaceで定義する
+@Mapper
+public interface BmiMapper {
 
-    @Select("SELECT * FROM names")
-    List<Name> findAll();
+    @Select("SELECT * FROM BMIs")
+    List<BodyData> findAll();
 
-    // prefixは接頭辞という意味
-    @Select("SELECT * FROM names WHERE name LIKE CONCAT(#{prefix}, '%')")
-    List<Name> findByNameStartingWith(String prefix);
+    @Select("SELECT * FROM BMIs WHERE bmi LIKE CONCAT(#{prefix}, '%')")
+    List<BodyData> findByNameStartingWith(String prefix);
 
     @Select("SELECT * FROM names WHERE id = #{id}")
-    Optional<Name> findById(int id); //Optional はListと違い、値があるかもしれないしないかもしれない時に使う
+    Optional<BodyData> findById(int id);
 
 }
