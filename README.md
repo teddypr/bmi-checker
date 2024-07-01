@@ -12,12 +12,13 @@
 
 ## 名前を全件取得するAPI
 
-- リクエスト <br>
-  Method:GET<br>
-  URL:/bodyDatas
-- レスポンス<br>
-  ステータスコード：200<br>
-  ボディ：ユーザーのリストを Json 形式で返す
+- リクエスト
+    - Method:GET
+    - URL:/bodyDatas
+- レスポンス
+    - ステータスコード：200
+    - ボディ：ユーザーのリストを Json 形式で返す
 
 ```curl
 curl --location 'http://localhost:8080/BMIs'
+
