@@ -1,4 +1,4 @@
-package com.health.BMI_check;
+package com.health.BMI_check.entity;
 
 public class BodyData {
 
@@ -17,6 +17,7 @@ public class BodyData {
         this.height = height;
         this.weight = weight;
     }
+
 
     //getter作成
     public Integer getId() {
