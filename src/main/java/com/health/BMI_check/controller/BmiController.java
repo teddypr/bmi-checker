@@ -21,7 +21,8 @@ public class BmiController {
     /**
      * READ処理を実装
      */
-    //BMIsテーブルの情報を全件取得するAPIを実装
+
+    //BMIsテーブルのレコードを全件取得するAPIを実装
     @GetMapping("/BMIs")
     public List<BodyData> getBodyDatas() {
         List<BodyData> bodydatas = bmiMapper.findAll();
