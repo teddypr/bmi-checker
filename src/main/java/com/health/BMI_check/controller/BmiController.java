@@ -1,21 +1,25 @@
 package com.health.BMI_check.controller;
 
-import com.health.BMI_check.BmiMapper;
+import com.health.BMI_check.BmiService;
+import com.health.BMI_check.DataNotFoundException;
 import com.health.BMI_check.entity.BodyData;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class BmiController {
 
-    private BmiMapper bmiMapper;
+    private final BmiService bmiService;
 
     //constructorを作成（dependency injectionによりNameMapperインスタンスが渡される）
-    public BmiController(BmiMapper bmiMapper) {
-        this.bmiMapper = bmiMapper;
+    public BmiController(BmiService bmiService) {
+        this.bmiService = bmiService;
     }
 
     /**
@@ -25,27 +29,35 @@ public class BmiController {
     //BMIsテーブルのレコードを全件取得するAPIを実装
     @GetMapping("/BMIs")
     public List<BodyData> getBodyDatas() {
-        List<BodyData> bodydatas = bmiMapper.findAll();
+        List<BodyData> bodydatas = bmiService.findAll();
         return bodydatas;
     }
 
-    //クエリ文字列を指定して検索するAPIを実装
+    //クエリ文字列を指定して検索するAPIを実装 @RequestParam＋型＋クエリ文字
     @GetMapping("/findNames")
     public List<BodyData> getBodyDatas(@RequestParam String startsWith) {
-        List<BodyData> bodydatas = bmiMapper.findByNameStartingWith(startsWith);
-        return bmiMapper.findByNameStartingWith(startsWith);
+        List<BodyData> bodydatas = bmiService.findByNamesStartingWith(startsWith);
+        return bmiService.findByNamesStartingWith(startsWith);
+    }
+
+    //Idを指定して検索するAPIを実装
+    @GetMapping("/findNames/{id}")
+    public BodyData findById(@PathVariable("id") int id) {
+        return bmiService.findUser(id);
+    }
+
+    //例外処理
+    @ExceptionHandler(value = DataNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleDataNotFoundException(
+            DataNotFoundException e, HttpServletRequest request) {
+        Map<String, String> body = Map.of(
+                "timestamp", ZonedDateTime.now().toString(),
+                "status", String.valueOf(HttpStatus.NOT_FOUND.value()),
+                "error", HttpStatus.NOT_FOUND.getReasonPhrase(),
+                "message", e.getMessage(),
+                "path", request.getRequestURI());
+        return new ResponseEntity(body, HttpStatus.NOT_FOUND);
     }
 
 }
-
-//service クラス
-//        if (bmi.BodyData() < 18.5) {
-//            System.out.println("評価：低体重");
-//
-//        } else if (getBodyData() < 25) {
-//            System.out.println("評価：普通体重");
-//
-//        } else {
-//            System.out.println("評価：肥満");
-//        }
 

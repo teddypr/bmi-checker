@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface BmiMapper {
@@ -15,12 +16,15 @@ public interface BmiMapper {
     List<BodyData> findAll();
 
     //部分一致検索
-    // SELECT * FROM テーブル名 WHERE カラム名 LIKE CONTACT(#{条件}, `検索文字`)
+    // １行目：SELECT * FROM テーブル名 WHERE カラム名 LIKE CONTACT(#{条件}, `検索文字`)
+    // ２行目：欲しいデータ + find〇〇 + （型＋クエリ文字）
     @Select("SELECT * FROM BMIs WHERE name LIKE CONCAT(#{startsWith}, '%')")
     List<BodyData> findByNameStartingWith(String startsWith);
 
-    //SELECT * FROM テーブル名 WHERE カラム名 =#{カラム名}
-//    @Select("SELECT * FROM BMIs WHERE id = #{id}")
-//    Optional<BodyData> findById(int id);
+    //該当する ID を持つレコードを検索
+    // 1行目：SELECT * FROM テーブル名 WHERE カラム名 =#{カラム名}
+    // 2行目：欲しいデータ（空の可能性のあり） + find〇〇 + (型＋パス変数)
+    @Select("SELECT * FROM BMIs WHERE id = #{id}")
+    Optional<BodyData> findById(int id);
 
 }
