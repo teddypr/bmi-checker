@@ -68,7 +68,7 @@ curl --location 'http://localhost:8080/BMIs/1'
 {
   "message": "user not found",
   "timestamp": "2024-07-01T07:19:14.393+00:00[Asia/Tokyo]",
-  "error": "Not Found",
+  "error": "Data not found",
   "path": "/BMIs/100",
   "status": 404
 }
