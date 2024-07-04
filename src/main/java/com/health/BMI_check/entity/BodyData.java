@@ -8,16 +8,17 @@ public class BodyData {
     private int age;
     private double height;
     private double weight;
+    private double bmi;
 
     //Constructor作成
-    public BodyData(Integer id, String name, int age, double height, double weight) {
+    public BodyData(Integer id, String name, int age, double height, double weight, double bmi) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.height = height;
         this.weight = weight;
+        this.bmi = bmi;
     }
-
 
     //getter作成
     public Integer getId() {
@@ -40,4 +41,7 @@ public class BodyData {
         return weight;
     }
 
+    public double getBmi() {
+        return bmi;
+    }
 }

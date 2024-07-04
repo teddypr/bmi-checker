@@ -15,9 +15,9 @@ import java.util.Map;
 @RestController
 public class BmiController {
 
+    //dependency injection
     private final BmiService bmiService;
 
-    //constructorを作成（dependency injectionによりNameMapperインスタンスが渡される）
     public BmiController(BmiService bmiService) {
         this.bmiService = bmiService;
     }
@@ -26,7 +26,7 @@ public class BmiController {
      * READ処理を実装
      */
 
-    //BMIsテーブルのレコードを全件取得するAPIを実装
+    //テーブルのレコードを全件取得するAPIを実装
     @GetMapping("/BMIs")
     public List<BodyData> getBodyDatas() {
         List<BodyData> bodydatas = bmiService.findAll();
@@ -46,7 +46,7 @@ public class BmiController {
         return bmiService.findUser(id);
     }
 
-    //例外処理
+    //例外処理を実装
     @ExceptionHandler(value = DataNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleDataNotFoundException(
             DataNotFoundException e, HttpServletRequest request) {
@@ -60,4 +60,3 @@ public class BmiController {
     }
 
 }
-
