@@ -42,6 +42,7 @@ public class BodyData {
     }
 
     public double getBmi() {
-        return bmi;
+        return (weight / (height / 100 * height / 100));
     }
+
 }
