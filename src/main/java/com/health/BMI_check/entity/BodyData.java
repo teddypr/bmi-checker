@@ -8,16 +8,16 @@ public class BodyData {
     private int age;
     private double height;
     private double weight;
-    private double bmi;
+    private double bmi; //BMIを追加
 
     //Constructor作成
-    public BodyData(Integer id, String name, int age, double height, double weight, double bmi) {
+    public BodyData(Integer id, String name, int age, double height, double weight) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.height = height;
         this.weight = weight;
-        this.bmi = bmi;
+        this.bmi = calculateBmi(height, weight); // BMIを計算してセット
     }
 
     //getter作成
@@ -42,7 +42,16 @@ public class BodyData {
     }
 
     public double getBmi() {
-        return (weight / (height / 100 * height / 100));
+        return bmi;
     }
 
+    private double calculateBmi(double height, double weight) {
+        return weight / (height * height / 10000);
+    }
+
+    //setter
+
+    public void setBmi(double bmi) {
+        this.bmi = bmi;
+    }
 }

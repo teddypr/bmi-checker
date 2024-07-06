@@ -22,6 +22,21 @@ public class BmiService {
         return bmiMapper.findAll();
     }
 
+    // 各BodyDataオブジェクトにBMIを計算してセット
+    public List<BodyData> getAllPersons() {
+        List<BodyData> bodyDatas = bmiMapper.findAll();
+        for (BodyData bodyData : bodyDatas) {
+            double bmi = calculateBmi(bodyData.getHeight(), bodyData.getWeight());
+        }
+        return bodyDatas;
+    }
+
+    //bmi の計算
+    public double calculateBmi(double height, double weight) {
+        return (weight / (height / 100 * height / 100));
+    }
+
+
     //クエリ文字で部分一致検索
     public List<BodyData> findByNamesStartingWith(String startsWith) {
         return bmiMapper.findByNameStartingWith(startsWith);
@@ -36,6 +51,7 @@ public class BmiService {
         } else {
             throw new DataNotFoundException("Data not found");
         }
+
     }
 
 }

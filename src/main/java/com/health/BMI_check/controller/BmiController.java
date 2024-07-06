@@ -27,7 +27,7 @@ public class BmiController {
      */
 
     //テーブルのレコードを全件取得するAPIを実装
-    @GetMapping("/BMIs")
+    @GetMapping("/bmi")
     public List<BodyData> getBodyDatas() {
         List<BodyData> bodydatas = bmiService.findAll();
         return bodydatas;
