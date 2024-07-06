@@ -1,6 +1,8 @@
-package com.health.BMI_check;
+package com.health.BMI_check.service;
 
+import com.health.BMI_check.DataNotFoundException;
 import com.health.BMI_check.entity.BodyData;
+import com.health.BMI_check.mapper.BmiMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +38,6 @@ public class BmiService {
         return (weight / (height / 100 * height / 100));
     }
 
-
     //クエリ文字で部分一致検索
     public List<BodyData> findByNamesStartingWith(String startsWith) {
         return bmiMapper.findByNameStartingWith(startsWith);
@@ -51,7 +52,6 @@ public class BmiService {
         } else {
             throw new DataNotFoundException("Data not found");
         }
-
     }
 
 }

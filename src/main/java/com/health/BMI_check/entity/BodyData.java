@@ -2,7 +2,7 @@ package com.health.BMI_check.entity;
 
 public class BodyData {
 
-    //field作成(id, name, height, weight, birthday の変数を定義)
+    //field (id, name, age, height, weight, bmi の変数を定義)
     private Integer id;
     private String name;
     private int age;
@@ -10,7 +10,7 @@ public class BodyData {
     private double weight;
     private double bmi; //BMIを追加
 
-    //Constructor作成
+    //Constructor
     public BodyData(Integer id, String name, int age, double height, double weight) {
         this.id = id;
         this.name = name;
@@ -20,7 +20,7 @@ public class BodyData {
         this.bmi = calculateBmi(height, weight); // BMIを計算してセット
     }
 
-    //getter作成
+    //getter
     public Integer getId() {
         return id;
     }
@@ -50,7 +50,6 @@ public class BodyData {
     }
 
     //setter
-
     public void setBmi(double bmi) {
         this.bmi = bmi;
     }

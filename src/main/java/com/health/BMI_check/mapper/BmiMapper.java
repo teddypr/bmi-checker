@@ -1,4 +1,4 @@
-package com.health.BMI_check;
+package com.health.BMI_check.mapper;
 
 import com.health.BMI_check.entity.BodyData;
 import org.apache.ibatis.annotations.Mapper;
