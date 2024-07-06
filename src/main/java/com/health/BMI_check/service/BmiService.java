@@ -18,14 +18,13 @@ public class BmiService {
         this.bmiMapper = bmiMapper;
     }
 
-    //method
     //全件取得
     public List<BodyData> findAll() {
         return bmiMapper.findAll();
     }
 
-    // 各BodyDataオブジェクトにBMIを計算してセット
-    public List<BodyData> getAllPersons() {
+    // bmi 計算
+    public List<BodyData> BMIs() {
         List<BodyData> bodyDatas = bmiMapper.findAll();
         for (BodyData bodyData : bodyDatas) {
             double bmi = calculateBmi(bodyData.getHeight(), bodyData.getWeight());
@@ -33,7 +32,6 @@ public class BmiService {
         return bodyDatas;
     }
 
-    //bmi の計算
     public double calculateBmi(double height, double weight) {
         return (weight / (height / 100 * height / 100));
     }
@@ -43,9 +41,8 @@ public class BmiService {
         return bmiMapper.findByNameStartingWith(startsWith);
     }
 
-    //Id で分岐処理（実在するIdを持つユーザー情報を表示、実在しなければ例外処理）
+    //Id で分岐処理
     public BodyData findUser(int id) {
-        //Optional は値を持っているかどうか分からない時に入れておく箱
         Optional<BodyData> bodyData = bmiMapper.findById(id);
         if (bodyData.isPresent()) {
             return bodyData.get();
