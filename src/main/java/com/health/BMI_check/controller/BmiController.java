@@ -42,7 +42,7 @@ public class BmiController {
     //Idを指定して検索するAPIを実装
     @GetMapping("/findNames/{id}")
     public BodyData findById(@PathVariable("id") int id) {
-        return bmiService.findUser(id);
+        return bmiService.findName(id);
     }
 
     //例外処理を実装

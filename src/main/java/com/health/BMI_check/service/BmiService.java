@@ -42,7 +42,7 @@ public class BmiService {
     }
 
     //Id で分岐処理
-    public BodyData findUser(int id) {
+    public BodyData findName(int id) {
         Optional<BodyData> bodyData = bmiMapper.findById(id);
         if (bodyData.isPresent()) {
             return bodyData.get();

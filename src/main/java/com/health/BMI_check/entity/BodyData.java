@@ -11,7 +11,7 @@ public class BodyData {
     private double bmi; //BMIを追加
 
     //Constructor
-    public BodyData(Integer id, String name, int age, double height, double weight) {
+    public BodyData(Integer id, String name, int age, double height, double weight, double bmi) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -53,4 +53,28 @@ public class BodyData {
     public void setBmi(double bmi) {
         this.bmi = bmi;
     }
+
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return "BodyData{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", bmi=" + bmi +
+                '}';
+    }
+
 }
