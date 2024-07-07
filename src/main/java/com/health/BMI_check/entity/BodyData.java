@@ -49,12 +49,6 @@ public class BodyData {
         return weight / (height * height / 10000);
     }
 
-    //setter
-    public void setBmi(double bmi) {
-        this.bmi = bmi;
-    }
-
-
     @Override
     public int hashCode() {
         return super.hashCode();
