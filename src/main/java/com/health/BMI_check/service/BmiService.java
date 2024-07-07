@@ -18,7 +18,6 @@ public class BmiService {
         this.bmiMapper = bmiMapper;
     }
 
-
     // bmi 計算
     public double calculateBmi(double height, double weight) {
         return (weight / (height / 100 * height / 100));
@@ -53,4 +52,3 @@ public class BmiService {
     }
 
 }
-
