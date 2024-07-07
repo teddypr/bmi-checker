@@ -58,7 +58,8 @@ curl --location 'http://localhost:8080/BMIs/1'
   "name": "タナカ　イチロウ",
   "age": 20,
   "height": 171.5,
-  "weight": 60.2
+  "weight": 60.2,
+  "bmi": 20.46766228357232
 }
 ```
 
@@ -66,11 +67,11 @@ curl --location 'http://localhost:8080/BMIs/1'
 
 ```json
 {
-  "message": "user not found",
-  "timestamp": "2024-07-01T07:19:14.393+00:00[Asia/Tokyo]",
-  "error": "Data not found",
-  "path": "/BMIs/100",
-  "status": 404
+  "error": "Not Found",
+  "timestamp": "2024-07-07T22:23:44.657353+09:00[Asia/Tokyo]",
+  "message": "Data not found",
+  "status": "404",
+  "path": "/findNames/100"
 }
 ```
 
