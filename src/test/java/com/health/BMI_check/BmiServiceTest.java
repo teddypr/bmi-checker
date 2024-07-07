@@ -50,7 +50,7 @@ public class BmiServiceTest {
     }
 
     @Test
-    public void testFindByNamesStartingWith() {
+    public void 存在する名前の頭文字を指定した時に正常にユーザーが返されること() {
         //Assert
         String query = "タ";
         List<BodyData> mockBodyDataList = Arrays.asList(
