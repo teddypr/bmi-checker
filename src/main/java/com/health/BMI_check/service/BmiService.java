@@ -18,12 +18,12 @@ public class BmiService {
         this.bmiMapper = bmiMapper;
     }
 
-    //全件取得
-    public List<BodyData> findAll() {
-        return bmiMapper.findAll();
-    }
 
     // bmi 計算
+    public double calculateBmi(double height, double weight) {
+        return (weight / (height / 100 * height / 100));
+    }
+
     public List<BodyData> BMIs() {
         List<BodyData> bodyDatas = bmiMapper.findAll();
         for (BodyData bodyData : bodyDatas) {
@@ -32,8 +32,9 @@ public class BmiService {
         return bodyDatas;
     }
 
-    public double calculateBmi(double height, double weight) {
-        return (weight / (height / 100 * height / 100));
+    //全件取得
+    public List<BodyData> findAll() {
+        return bmiMapper.findAll();
     }
 
     //クエリ文字で部分一致検索
