@@ -28,7 +28,7 @@ public class BmiServiceTest {
 
     @Test
     public void 全てのユーザーが正常に返されること() throws Exception {
-        //Arrange
+        //Arrange　スタブするモックの動きを決める
         List<BodyData> mockBodyDataList = Arrays.asList(
                 new BodyData(1, "タナカ　イチロウ", 20, 171.5, 60.2),
                 new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0),
@@ -52,28 +52,27 @@ public class BmiServiceTest {
     @Test
     public void 存在する名前の頭文字を指定した時に正常にユーザーが返されること() {
         //Assert
-        String query = "タ";
+        String startsWith = "タ";
         List<BodyData> mockBodyDataList = Arrays.asList(
                 new BodyData(1, "タナカ イチロウ", 20, 171.5, 60.2)
         );
 
-        when(bmiMapper.findByNameStartingWith(query)).thenReturn(mockBodyDataList);
+        when(bmiMapper.findByNameStartingWith(startsWith)).thenReturn(mockBodyDataList);
 
         //Act
-        List<BodyData> bodyDataList = bmiService.findByNamesStartingWith(query);
+        List<BodyData> bodyDataList = bmiService.findByNamesStartingWith(startsWith);
 
         //Assert
         assertThat(bodyDataList).isNotNull();
         assertThat(bodyDataList.size()).isEqualTo(1);
         assertThat(bodyDataList.get(0).getName()).isEqualTo("タナカ イチロウ");
 
-        verify(bmiMapper, times(1)).findByNameStartingWith(query);
+        verify(bmiMapper, times(1)).findByNameStartingWith(startsWith);
     }
-
 
     @Test
     public void 存在するユーザーのIDを指定したときに正常にユーザーが返されること() throws Exception {
-        //Arrange スタブする Mapper の動きを決める
+        //Arrange
         doReturn(Optional.of(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0))).when(bmiMapper).findById(2);
 
         //Act
