@@ -14,7 +14,7 @@
 
 - リクエスト
     - Method:GET
-    - URL:/bodyDatas
+    - URL:/BMIs
 - レスポンス
     - ステータスコード：200
     - ボディ：ユーザーのリストを Json 形式で返す
@@ -27,27 +27,27 @@ curl --location 'http://localhost:8080/BMIs'
 
 - リクエスト
     - Method:GET
-    - URL:/findNames?startsWith={name}
+    - URL:/userNames?startsWith={name}
 - レスポンス
     - ステータスコード：200
     - ボディ：ユーザーのリストを Json 形式で返す
 
 ```curl
-curl --location 'http://localhost:8080/findNames?startsWith=%E3%82%BF'
+curl --location 'http://localhost:8080/userNames?startsWith=%E3%82%BF'
 ```
 
 ## 指定した ID のレコードを取得するAPI
 
 - リクエスト
     - Method:GET
-    - URL:/BMIs/{id}
+    - URL:/userNames/{id}
 - レスポンス
     - ステータスコード：200
     - ボディ：ユーザーのリストを Json 形式で返す
     - ID が存在しない場合はステータスコード 404 を返す
 
 ```curl
-curl --location 'http://localhost:8080/BMIs/1'
+curl --location 'http://localhost:8080/userNames/1'
 ```
 
 200 の場合のレスポンス
@@ -58,7 +58,8 @@ curl --location 'http://localhost:8080/BMIs/1'
   "name": "タナカ　イチロウ",
   "age": 20,
   "height": 171.5,
-  "weight": 60.2
+  "weight": 60.2,
+  "bmi": 20.46766228357232
 }
 ```
 
@@ -66,11 +67,11 @@ curl --location 'http://localhost:8080/BMIs/1'
 
 ```json
 {
-  "message": "user not found",
-  "timestamp": "2024-07-01T07:19:14.393+00:00[Asia/Tokyo]",
-  "error": "Data not found",
-  "path": "/BMIs/100",
-  "status": 404
+  "error": "Not Found",
+  "timestamp": "2024-07-07T22:23:44.657353+09:00[Asia/Tokyo]",
+  "message": "Data not found",
+  "status": "404",
+  "path": "/userNames/100"
 }
 ```
 

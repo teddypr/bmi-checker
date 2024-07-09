@@ -1,6 +1,8 @@
-package com.health.BMI_check;
+package com.health.BMI_check.service;
 
+import com.health.BMI_check.DataNotFoundException;
 import com.health.BMI_check.entity.BodyData;
+import com.health.BMI_check.mapper.BmiMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,15 +11,25 @@ import java.util.Optional;
 @Service
 public class BmiService {
 
-    //field
+    //dependency injection
     private BmiMapper bmiMapper;
 
-    //constructor
     public BmiService(BmiMapper bmiMapper) {
         this.bmiMapper = bmiMapper;
     }
 
-    //method
+    // bmi 計算
+    public double calculateBmi(double height, double weight) {
+        return (weight / (height / 100 * height / 100));
+    }
+
+    public List<BodyData> BMIs() {
+        List<BodyData> bodyDatas = bmiMapper.findAll();
+        for (BodyData bodyData : bodyDatas) {
+            double bmi = calculateBmi(bodyData.getHeight(), bodyData.getWeight());
+        }
+        return bodyDatas;
+    }
 
     //全件取得
     public List<BodyData> findAll() {
@@ -29,9 +41,8 @@ public class BmiService {
         return bmiMapper.findByNameStartingWith(startsWith);
     }
 
-    //Id で分岐処理（実在するIdを持つユーザー情報の検索 と 例外処理）
-    public BodyData findUser(int id) {
-        //Optional は値を持っているかどうか分からない時に入れておく箱
+    //Id で分岐処理
+    public BodyData findName(int id) {
         Optional<BodyData> bodyData = bmiMapper.findById(id);
         if (bodyData.isPresent()) {
             return bodyData.get();
@@ -41,14 +52,3 @@ public class BmiService {
     }
 
 }
-
-//service クラス
-//        if (bmi.BodyData() < 18.5) {
-//            System.out.println("評価：低体重");
-//
-//        } else if (getBodyData() < 25) {
-//            System.out.println("評価：普通体重");
-//
-//        } else {
-//            System.out.println("評価：肥満");
-//        }

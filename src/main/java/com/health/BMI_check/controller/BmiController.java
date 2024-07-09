@@ -1,8 +1,8 @@
 package com.health.BMI_check.controller;
 
-import com.health.BMI_check.BmiService;
 import com.health.BMI_check.DataNotFoundException;
 import com.health.BMI_check.entity.BodyData;
+import com.health.BMI_check.service.BmiService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +15,9 @@ import java.util.Map;
 @RestController
 public class BmiController {
 
+    //dependency injection
     private final BmiService bmiService;
 
-    //constructorを作成（dependency injectionによりNameMapperインスタンスが渡される）
     public BmiController(BmiService bmiService) {
         this.bmiService = bmiService;
     }
@@ -25,8 +25,7 @@ public class BmiController {
     /**
      * READ処理を実装
      */
-
-    //BMIsテーブルのレコードを全件取得するAPIを実装
+    //テーブルのレコードを全件取得するAPIを実装
     @GetMapping("/BMIs")
     public List<BodyData> getBodyDatas() {
         List<BodyData> bodydatas = bmiService.findAll();
@@ -34,19 +33,19 @@ public class BmiController {
     }
 
     //クエリ文字列を指定して検索するAPIを実装 @RequestParam＋型＋クエリ文字
-    @GetMapping("/findNames")
+    @GetMapping("/userNames")
     public List<BodyData> getBodyDatas(@RequestParam String startsWith) {
         List<BodyData> bodydatas = bmiService.findByNamesStartingWith(startsWith);
         return bmiService.findByNamesStartingWith(startsWith);
     }
 
     //Idを指定して検索するAPIを実装
-    @GetMapping("/findNames/{id}")
+    @GetMapping("/userNames/{id}")
     public BodyData findById(@PathVariable("id") int id) {
-        return bmiService.findUser(id);
+        return bmiService.findName(id);
     }
 
-    //例外処理
+    //例外処理を実装
     @ExceptionHandler(value = DataNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleDataNotFoundException(
             DataNotFoundException e, HttpServletRequest request) {
@@ -60,4 +59,3 @@ public class BmiController {
     }
 
 }
-
