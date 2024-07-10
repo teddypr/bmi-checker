@@ -12,7 +12,7 @@ import java.util.Optional;
 public class BmiService {
 
     //dependency injection
-    private BmiMapper bmiMapper;
+    private final BmiMapper bmiMapper;
 
     public BmiService(BmiMapper bmiMapper) {
         this.bmiMapper = bmiMapper;
@@ -50,5 +50,15 @@ public class BmiService {
             throw new DataNotFoundException("Data not found");
         }
     }
+
+    /**
+     * ユーザーに関するCreate業務処理を担うサービスクラス
+     */
+    public BodyData insert(String name, int age, double height, double weight) {
+        BodyData bodyData = new BodyData(name, age, height, weight);
+        bmiMapper.insert(bodyData);
+        return bodyData;
+    }
+
 
 }
