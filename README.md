@@ -75,3 +75,24 @@ curl --location 'http://localhost:8080/userNames/1'
 }
 ```
 
+## ユーザー情報を登録するAPI
+
+- リクエスト
+    - Method:POST
+    - URL:/BMIs
+- レスポンス
+    - ステータスコード：201
+    - ボディ：Json形式で "New data is created" を返す
+    - 同姓同名のユーザーが登録された場合は、ステータスコード500サーバーエラーを返す
+
+```curl
+curl 
+--location 'http://localhost:8080/BMIs' \
+--header 'Content-Type: application/json' \
+--data '{
+        "name": "小野　千代",
+        "age": 30,
+        "height": 157.9,
+        "weight": 55.3
+}'
+```
