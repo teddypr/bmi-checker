@@ -1,10 +1,10 @@
 package com.health.BMI_check.controller;
 
+/**
+ * ユーザー情報登録時に使うリクエストパラメータ
+ */
 public class BodyDataRequest {
 
-    /**
-     * ユーザー情報登録時に使うリクエストパラメータ
-     */
     private String name;
     private int age;
     private double height;
