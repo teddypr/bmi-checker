@@ -37,7 +37,7 @@ public class BmiService {
     }
 
     //クエリ文字で部分一致検索
-    public List<BodyData> findByNamesStartingWith(String startsWith) {
+    public List<BodyData> findByHeadName(String startsWith) {
         return bmiMapper.findByNameStartingWith(startsWith);
     }
 
@@ -59,6 +59,5 @@ public class BmiService {
         bmiMapper.insert(bodyData);
         return bodyData;
     }
-
 
 }

@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +37,8 @@ public class BmiController {
     //クエリ文字列を指定して検索するAPIを実装 @RequestParam＋型＋クエリ文字
     @GetMapping("/userNames")
     public List<BodyData> getBodyDatas(@RequestParam String startsWith) {
-        List<BodyData> bodydatas = bmiService.findByNamesStartingWith(startsWith);
-        return bmiService.findByNamesStartingWith(startsWith);
+        List<BodyData> bodydatas = bmiService.findByHeadName(startsWith);
+        return bmiService.findByHeadName(startsWith);
     }
 
     //Idを指定して検索するAPIを実装
@@ -56,6 +58,17 @@ public class BmiController {
                 "message", e.getMessage(),
                 "path", request.getRequestURI());
         return new ResponseEntity(body, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Create処理を実装 ユーザー登録に関してHTTPリクエストを受け付ける
+     */
+    @PostMapping("/BMIs")
+    public ResponseEntity<BodyDataResponse> insert(@RequestBody BodyDataRequest request, UriComponentsBuilder uriBuilder) {
+        BodyData bodyData = bmiService.insert(request.getName(), request.getAge(), request.getHeight(), request.getWeight());
+        URI location = uriBuilder.path("/BMIs/{id}").buildAndExpand(bodyData.getId()).toUri();
+        BodyDataResponse newData = new BodyDataResponse("New data is created");
+        return ResponseEntity.created(location).body(newData);
     }
 
 }
