@@ -37,14 +37,14 @@ public class BmiController {
     //クエリ文字列を指定して検索するAPIを実装 @RequestParam＋型＋クエリ文字
     @GetMapping("/userNames")
     public List<BodyData> getBodyDatas(@RequestParam String startsWith) {
-        List<BodyData> bodydatas = bmiService.findByHeadName(startsWith);
-        return bmiService.findByHeadName(startsWith);
+        List<BodyData> bodydatas = bmiService.findAcronym(startsWith);
+        return bmiService.findAcronym(startsWith);
     }
 
     //Idを指定して検索するAPIを実装
     @GetMapping("/userNames/{id}")
     public BodyData findById(@PathVariable("id") int id) {
-        return bmiService.findName(id);
+        return bmiService.findId(id);
     }
 
     //例外処理を実装

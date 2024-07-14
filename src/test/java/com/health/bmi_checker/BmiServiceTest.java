@@ -59,7 +59,7 @@ public class BmiServiceTest {
         when(bmiMapper.findByNameStartingWith("タ")).thenReturn(HdBodydata);
 
         // Act
-        List<BodyData> actualList = bmiService.findByHeadName("タ");
+        List<BodyData> actualList = bmiService.findAcronym("タ");
 
         // Assert
         assertThat(actualList).isNotNull();
@@ -78,7 +78,7 @@ public class BmiServiceTest {
         doReturn(Optional.of(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0))).when(bmiMapper).findById(2);
 
         //Act
-        BodyData actual = bmiService.findName(2);
+        BodyData actual = bmiService.findId(2);
 
         //Assert
         assertThat(actual).isEqualToComparingFieldByField(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0));
@@ -96,7 +96,7 @@ public class BmiServiceTest {
 
         //Assert
         assertThatThrownBy(() -> {
-            bmiService.findName(100);
+            bmiService.findId(100);
         }).isInstanceOf(DataNotFoundException.class)
                 .hasMessage("Data not found");
 

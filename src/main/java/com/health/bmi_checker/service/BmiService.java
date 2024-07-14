@@ -37,12 +37,12 @@ public class BmiService {
     }
 
     //クエリ文字で部分一致検索
-    public List<BodyData> findByHeadName(String startsWith) {
+    public List<BodyData> findAcronym(String startsWith) {
         return bmiMapper.findByNameStartingWith(startsWith);
     }
 
     //Id で分岐処理
-    public BodyData findName(int id) {
+    public BodyData findId(int id) {
         Optional<BodyData> bodyData = bmiMapper.findById(id);
         if (bodyData.isPresent()) {
             return bodyData.get();
