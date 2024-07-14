@@ -1,4 +1,4 @@
-package com.health.BMI_check.entity;
+package com.health.bmi_checker.entity;
 
 import java.util.Objects;
 

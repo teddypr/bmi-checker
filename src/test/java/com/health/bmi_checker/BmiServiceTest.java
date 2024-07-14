@@ -1,8 +1,8 @@
-package com.health.BMI_check;
+package com.health.bmi_checker;
 
-import com.health.BMI_check.entity.BodyData;
-import com.health.BMI_check.mapper.BmiMapper;
-import com.health.BMI_check.service.BmiService;
+import com.health.bmi_checker.entity.BodyData;
+import com.health.bmi_checker.mapper.BmiMapper;
+import com.health.bmi_checker.service.BmiService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

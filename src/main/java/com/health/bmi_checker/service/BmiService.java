@@ -1,8 +1,8 @@
-package com.health.BMI_check.service;
+package com.health.bmi_checker.service;
 
-import com.health.BMI_check.DataNotFoundException;
-import com.health.BMI_check.entity.BodyData;
-import com.health.BMI_check.mapper.BmiMapper;
+import com.health.bmi_checker.DataNotFoundException;
+import com.health.bmi_checker.entity.BodyData;
+import com.health.bmi_checker.mapper.BmiMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public class BmiService {
     }
 
     /**
-     * ユーザーに関するCreate業務処理を担うサービスクラス
+     * ユーザーに関するCreate業務処理を担う
      */
     public BodyData insert(String name, int age, double height, double weight) {
         BodyData bodyData = new BodyData(name, age, height, weight);

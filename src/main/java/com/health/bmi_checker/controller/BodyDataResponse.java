@@ -1,4 +1,4 @@
-package com.health.BMI_check.controller;
+package com.health.bmi_checker.controller;
 
 /**
  * ユーザー情報取得時に使うレスポンスパラメータ

@@ -1,8 +1,8 @@
-package com.health.BMI_check.controller;
+package com.health.bmi_checker.controller;
 
-import com.health.BMI_check.DataNotFoundException;
-import com.health.BMI_check.entity.BodyData;
-import com.health.BMI_check.service.BmiService;
+import com.health.bmi_checker.DataNotFoundException;
+import com.health.bmi_checker.entity.BodyData;
+import com.health.bmi_checker.service.BmiService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
