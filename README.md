@@ -83,16 +83,49 @@ curl --location 'http://localhost:8080/userNames/1'
 - レスポンス
     - ステータスコード：201
     - ボディ：Json形式で "New data is created" を返す
-    - 同姓同名のユーザーが登録された場合は、ステータスコード500サーバーエラーを返す
+    - 同姓同名のユーザーが登録された場合は、ステータスコード 409 を、
+    - 空のデータが登録された場合は、ステータスコード 400 を返す
 
-```curl
-curl 
---location 'http://localhost:8080/BMIs' \
---header 'Content-Type: application/json' \
---data '{
-        "name": "小野　千代",
-        "age": 30,
-        "height": 157.9,
-        "weight": 55.3
-}'
+200 の場合のレスポンス
+
+```json
+{
+  "message": "New data is created"
+}
+```
+
+409 の場合のレスポンス
+
+```json
+{
+  "status": "409",
+  "path": "/BMIs",
+  "error": "Conflict",
+  "timestamp": "2024-07-15T22:46:24.616755+09:00[Asia/Tokyo]",
+  "message": "同じ名前のデータが既に存在します"
+}
+```
+
+400 の場合のレスポンス
+
+- 以下の条件いずれかを満たさずに入力した時
+
+```json
+{
+  "name": "名前は必須項目です",
+  "weight": "体重はキログラム単位で正の数でなければなりません",
+  "age": "年齢は正の整数でなければなりません",
+  "height": "身長の単位はメートルで正の数でなければなりません"
+}
+```
+
+- json の形式が誤っている時（Postman に赤線が入る時）
+
+```json
+{
+  "timestamp": "2024-07-15T13:53:24.763+00:00",
+  "status": 400,
+  "error": "Bad Request",
+  "path": "/BMIs"
+}
 ```
