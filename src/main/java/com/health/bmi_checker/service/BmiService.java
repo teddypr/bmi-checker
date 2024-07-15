@@ -1,6 +1,7 @@
 package com.health.bmi_checker.service;
 
 import com.health.bmi_checker.DataNotFoundException;
+import com.health.bmi_checker.DuplicateDataException;
 import com.health.bmi_checker.entity.BodyData;
 import com.health.bmi_checker.mapper.BmiMapper;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,14 @@ public class BmiService {
      * ユーザーに関するCreate業務処理を担う
      */
     public BodyData insert(String name, int age, double height, double weight) {
+        // 同姓同名の確認
+        List<BodyData> existingData = findAll();
+        for (BodyData data : existingData) {
+            if (data.getName().equals(name)) {
+                throw new DuplicateDataException("同じ名前のデータが既に存在します");
+            }
+        }
+
         BodyData bodyData = new BodyData(name, age, height, weight);
         bmiMapper.insert(bodyData);
         return bodyData;

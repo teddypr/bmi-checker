@@ -46,7 +46,7 @@ public class BmiController {
 
 
     /**
-     * Create処理を実装 ユーザー登録に関してHTTPリクエストを受け付ける
+     * Create処理 ユーザー登録に関してHTTPリクエストを受け付ける
      */
     @PostMapping("/BMIs")
     public ResponseEntity<BodyDataResponse> insert(@RequestBody @Valid BodyDataRequest request, UriComponentsBuilder uriBuilder) {

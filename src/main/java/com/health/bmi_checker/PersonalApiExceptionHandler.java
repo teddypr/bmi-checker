@@ -1,59 +1,53 @@
-package com.validationsample.validation;
+package com.health.bmi_checker;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
-public class UserApiExceptionHandler {
+public class PersonalApiExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        List<Map<String, String>> errors = new ArrayList<>();
-        e.getBindingResult().getFieldErrors().forEach(fieldError -> {
-            Map<String, String> error = new HashMap<>();
-            error.put("field", fieldError.getField());
-            error.put("message", fieldError.getDefaultMessage());
-            errors.add(error);
-        });
-        ErrorResponse errorResponse =
-                new ErrorResponse(HttpStatus.BAD_REQUEST, "validation error", errors);
-        return ResponseEntity.badRequest().body(errorResponse);
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleDataNotFoundException(
+            DataNotFoundException e, HttpServletRequest request) {
+        Map<String, String> body = Map.of(
+                "timestamp", ZonedDateTime.now().toString(),
+                "status", String.valueOf(HttpStatus.NOT_FOUND.value()),
+                "error", HttpStatus.NOT_FOUND.getReasonPhrase(),
+                "message", e.getMessage(),
+                "path", request.getRequestURI());
+        return new ResponseEntity(body, HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * エラーレスポンスのクラス
-     */
-    public static final class ErrorResponse {
-        private final HttpStatus status;
-        private final String message;
-        private final List<Map<String, String>> errors;
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 
-        public ErrorResponse(HttpStatus status, String message, List<Map<String, String>> errors) {
-            this.status = status;
-            this.message = message;
-            this.errors = errors;
-        }
-
-        public HttpStatus getStatus() {
-            return status;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public List<Map<String, String>> getErrors() {
-            return errors;
-        }
-
+    @ExceptionHandler(DuplicateDataException.class)
+    public ResponseEntity<Map<String, String>> handleDuplicateDataException(
+            DuplicateDataException e, HttpServletRequest request) {
+        Map<String, String> body = Map.of(
+                "timestamp", ZonedDateTime.now().toString(),
+                "status", String.valueOf(HttpStatus.CONFLICT.value()), // ステータスコード409を返す
+                "error", HttpStatus.CONFLICT.getReasonPhrase(),
+                "message", e.getMessage(),
+                "path", request.getRequestURI());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
 }
