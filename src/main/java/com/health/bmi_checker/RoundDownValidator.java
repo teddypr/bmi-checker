@@ -3,10 +3,10 @@ package com.health.bmi_checker;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class DecimalValidator implements ConstraintValidator<DecimalConstraint, Double> {
+public class RoundDownValidator implements ConstraintValidator<RoundDownConstraint, Double> {
 
     @Override
-    public void initialize(DecimalConstraint constraintAnnotation) {
+    public void initialize(RoundDownConstraint constraintAnnotation) {
     }
 
     @Override

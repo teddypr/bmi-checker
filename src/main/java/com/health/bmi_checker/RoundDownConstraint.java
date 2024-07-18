@@ -8,11 +8,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = DecimalValidator.class)
+@Constraint(validatedBy = RoundDownValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DecimalConstraint {
-    String message() default "小数点以下第一位までで入力してください";
+public @interface RoundDownConstraint {
+    String message() default "小数点以下第一位までを入力してください";
 
     Class<?>[] groups() default {};
 
