@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class bmiCheckerApplication {
+public class BmiCheckerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(bmiCheckerApplication.class, args);
+        SpringApplication.run(BmiCheckerApplication.class, args);
     }
 
 }
