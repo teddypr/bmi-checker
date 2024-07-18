@@ -17,23 +17,23 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
 
 - 従業員の名前を全件取得するAPI
     - リクエスト
-        - Method:GET
-        - URL:/BMIs
+        - Method: GET
+        - URL: /BMIs
     - レスポンス
-        - ステータスコード：200
-        - ボディ：ユーザーのリストを Json 形式で返す
+        - ステータスコード： 200
+        - ボディ： ユーザーのリストを Json 形式で返す
       ```curl
       curl --location 'http://localhost:8080/BMIs'
       ```
 
 - クエリ文字列で指定した name のレコードを取得するAPI
     - リクエスト
-        - Method:GET
-        - URL:/userNames?startsWith={name}
+        - Method: GET
+        - URL: /userNames?startsWith={name}
 
     - レスポンス
-        - ステータスコード：200
-        - ボディ：ユーザーのリストを Json 形式で返す
+        - ステータスコード： 200
+        - ボディ： ユーザーのリストを Json 形式で返す
       ```curl
       curl --location 'http://localhost:8080/userNames?startsWith=%E3%82%BF'
       ```
@@ -41,11 +41,11 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
 - 指定した ID のレコードを取得するAPI
 
     - リクエスト
-        - Method:GET
-        - URL:/userNames/{id}
+        - Method: GET
+        - URL: /userNames/{id}
     - レスポンス
-        - ステータスコード：200
-        - ボディ：ユーザーのリストを Json 形式で返す
+        - ステータスコード： 200
+        - ボディ： ユーザーのリストを Json 形式で返す
         - ID が存在しない場合はステータスコード 404 を返す
       ```curl
       curl --location 'http://localhost:8080/userNames/1'
@@ -82,11 +82,11 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
 - ユーザー情報を登録するAPI
 
     - リクエスト
-        - Method:POST
-        - URL:/BMIs
+        - Method: POST
+        - URL: /BMIs
     - レスポンス
-        - ステータスコード：201
-        - ボディ：Json形式で "New data is created" を返す
+        - ステータスコード： 201
+        - ボディ： Json形式で "New data is created" を返す
         - 同姓同名のユーザーが登録された場合はステータスコード 409 を、 空のデータが登録された場合はステータスコード 400
           を返す
 
