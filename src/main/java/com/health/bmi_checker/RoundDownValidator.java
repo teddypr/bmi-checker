@@ -17,4 +17,5 @@ public class RoundDownValidator implements ConstraintValidator<RoundDownConstrai
         // 小数点以下第一位までの桁数をチェック
         return Math.floor(value * 10) / 10 == value;
     }
+
 }
