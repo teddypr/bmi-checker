@@ -9,7 +9,6 @@ CREATE TABLE  BMIs(
  PRIMARY KEY(id)
 );
 
-
 INSERT INTO BMIs (name, age, height, weight) VALUES ('タナカ　イチロウ', 20, 171.5, 60.2);
 INSERT INTO BMIs (name, age, height, weight) VALUES ('スズキ　ジロウ', 18, 181.0, 88.0);
 INSERT INTO BMIs (name, age, height, weight) VALUES ('ムラタ　サブロウ', 26, 167.9, 101.3);

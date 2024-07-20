@@ -1,4 +1,6 @@
-package com.health.BMI_check.entity;
+package com.health.bmi_checker.entity;
+
+import java.util.Objects;
 
 public class BodyData {
 
@@ -8,9 +10,9 @@ public class BodyData {
     private int age;
     private double height;
     private double weight;
-    private double bmi; //BMIを追加
+    private double bmi;
 
-    //Constructor
+    //通常のConstructor
     public BodyData(Integer id, String name, int age, double height, double weight) {
         this.id = id;
         this.name = name;
@@ -18,6 +20,15 @@ public class BodyData {
         this.height = height;
         this.weight = weight;
         this.bmi = calculateBmi(height, weight); // BMIを計算してセット
+    }
+
+    //Create処理用の Constructor (DBに登録する前にインスタンス化する時に使う)
+    public BodyData(String name, int age, double height, double weight) {
+        this.id = null;
+        this.name = name;
+        this.age = age;
+        this.height = height;
+        this.weight = weight;
     }
 
     //getter
@@ -48,5 +59,20 @@ public class BodyData {
     private double calculateBmi(double height, double weight) {
         return weight / (height * height / 10000);
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BodyData bodyData = (BodyData) o;
+        return age == bodyData.age && Double.compare(height, bodyData.height) == 0 && Double.compare(weight, bodyData.weight) == 0 && Double.compare(bmi, bodyData.bmi) == 0 && Objects.equals(id, bodyData.id) && Objects.equals(name, bodyData.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, height, weight, bmi);
+    }
+
 
 }

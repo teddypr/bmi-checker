@@ -1,4 +1,4 @@
-package com.health.BMI_check;
+package com.health.bmi_checker;
 
 public class DataNotFoundException extends RuntimeException {
 
@@ -6,4 +6,3 @@ public class DataNotFoundException extends RuntimeException {
         super(message);
     }
 }
-
