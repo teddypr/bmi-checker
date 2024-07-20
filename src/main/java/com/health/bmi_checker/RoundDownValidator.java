@@ -4,9 +4,11 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class RoundDownValidator implements ConstraintValidator<RoundDownConstraint, Double> {
+    private int decimalPoint;
 
     @Override
     public void initialize(RoundDownConstraint constraintAnnotation) {
+        this.decimalPoint = constraintAnnotation.decimalPoint();
     }
 
     @Override
