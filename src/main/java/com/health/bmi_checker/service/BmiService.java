@@ -38,17 +38,22 @@ public class BmiService {
     }
 
     //クエリ文字で部分一致検索
-    public List<BodyData> findAcronym(String startsWith) {
-        return bmiMapper.findByNameStartingWith(startsWith);
+    public BodyData findAcronym(String startsWith) {
+        Optional<BodyData> bodyData = bmiMapper.findByNameStartingWith(startsWith);
+        if (bodyData.isPresent()) {
+            return bodyData.get();
+        } else {
+            throw new DataNotFoundException("該当する従業員は存在しません");
+        }
     }
 
-    //Id で分岐処理
+    //Id で従業員を検索
     public BodyData findId(int id) {
         Optional<BodyData> bodyData = bmiMapper.findById(id);
         if (bodyData.isPresent()) {
             return bodyData.get();
         } else {
-            throw new DataNotFoundException("Data not found");
+            throw new DataNotFoundException("該当する従業員は存在しません");
         }
     }
 
@@ -60,7 +65,7 @@ public class BmiService {
         List<BodyData> existingData = findAll();
         for (BodyData data : existingData) {
             if (data.getName().equals(name)) {
-                throw new DuplicateNameException("同じ名前のデータが既に存在します");
+                throw new DuplicateNameException("同姓同名の従業員が既に存在します");
             }
         }
 

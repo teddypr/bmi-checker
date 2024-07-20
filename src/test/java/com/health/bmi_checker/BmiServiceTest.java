@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,27 +52,23 @@ public class BmiServiceTest {
     @Test
     public void 存在する名前の頭文字を指定した時に正常にユーザーが返されること() {
         // Arrange
-        List<BodyData> HdBodydata = Arrays.asList(
-                new BodyData(1, "タナカ イチロウ", 20, 171.5, 60.2)
-        );
-        when(bmiMapper.findByNameStartingWith("タ")).thenReturn(HdBodydata);
+        //Arrange
+        doReturn(Optional.of(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0))).when(bmiMapper).findById(2);
 
-        // Act
-        List<BodyData> actualList = bmiService.findAcronym("タ");
+        //Act
+        BodyData actual = bmiService.findId(2);
 
-        // Assert
-        assertThat(actualList).isNotNull();
-        assertThat(actualList.size()).isEqualTo(1);
-        BodyData actual = actualList.get(0);
-        assertThat(actual).isEqualToComparingFieldByField(new BodyData(1, "タナカ イチロウ", 20, 171.5, 60.2));
-        assertThat(actual.getBmi()).isEqualTo(20.46766228357232);
+        //Assert
+        assertThat(actual).isEqualToComparingFieldByField(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0));
+        assertThat(actual.getBmi()).isEqualTo(26.861206922865602);
 
         //スタブの呼び出しを検証
         verify(bmiMapper, times(1)).findByNameStartingWith("タ");
     }
 
+
     @Test
-    public void 存在するユーザーのIDを指定したときに正常にユーザーが返されること() {
+    public void 存在するユーザーのIDを指定した時に正常にユーザーが返されること() {
         //Arrange
         doReturn(Optional.of(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0))).when(bmiMapper).findById(2);
 
@@ -90,7 +85,7 @@ public class BmiServiceTest {
 
     //例外をthrowする場合の検証はどう書くのか　assertThatThrowBy　DoNothing
     @Test
-    public void 存在しないIDを指定した場合は例外が発生すること() {
+    public void 存在しないIDを指定した時に例外が発生すること() {
         //Arrange
         doReturn(Optional.empty()).when(bmiMapper).findById(100);
 

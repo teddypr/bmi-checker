@@ -74,5 +74,4 @@ public class BodyData {
         return Objects.hash(id, name, age, height, weight, bmi);
     }
 
-
 }
