@@ -93,7 +93,7 @@ public class BmiServiceTest {
         assertThatThrownBy(() -> {
             bmiService.findId(100);
         }).isInstanceOf(DataNotFoundException.class)
-                .hasMessage("Data not found");
+                .hasMessage("該当する従業員は存在しません");
 
         //スタブの呼び出しを検証
         verify(bmiMapper, times(1)).findById(100);
