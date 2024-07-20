@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 public class BodyDataRequest {
 
     @NotBlank(message = "名前は必須項目です")
-    @Size(max = 20, message = "名前は20字以内で入力してください")
+    @Size(max = 20, message = "名前は {max} 字以内で入力してください")
     private String name;
 
     @NotNull(message = "年齢は必須項目です")
