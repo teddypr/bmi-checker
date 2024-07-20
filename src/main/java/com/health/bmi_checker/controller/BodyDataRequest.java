@@ -22,12 +22,12 @@ public class BodyDataRequest {
 
     @NotNull(message = "身長は必須項目です")
     @Positive(message = "身長は単位メートルで正の数でなければなりません")
-    @RoundDownConstraint(decimalPoint = 1, message = "身長は小数点以下第 {decimalPoint} 位までを入力してください")
+    @RoundDownConstraint(decimalPoint = 1, message = "身長は小数点第 {decimalPoint} 位までを入力してください")
     private double height;
 
     @NotNull(message = "体重は必須項目です")
     @Positive(message = "体重はキログラム単位で正の数でなければなりません")
-    @RoundDownConstraint(decimalPoint = 1, message = "体重は小数点以下第 {decimalPoint} 位までを入力してください")
+    @RoundDownConstraint(decimalPoint = 1, message = "体重は小数点第 {decimalPoint} 位までを入力してください")
     private double weight;
 
     public BodyDataRequest(String name, int age, double height, double weight) {

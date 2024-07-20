@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RoundDownConstraint {
 
-    String message() default "小数点以下第 {decimalPoint} 位までを入力してください";
+    String message() default "小数点第 {decimalPoint} 位までを入力してください";
 
     int decimalPoint() default 1;
 
