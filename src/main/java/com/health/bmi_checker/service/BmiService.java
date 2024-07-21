@@ -38,13 +38,12 @@ public class BmiService {
     }
 
     //クエリ文字で部分一致検索
-    public BodyData findAcronym(String startsWith) {
-        Optional<BodyData> bodyData = bmiMapper.findByNameStartingWith(startsWith);
-        if (bodyData.isPresent()) {
-            return bodyData.get();
-        } else {
+    public List<BodyData> findAcronym(String startsWith) {
+        List<BodyData> bodyDataList = bmiMapper.findByNameStartingWith(startsWith);
+        if (bodyDataList.isEmpty()) {
             throw new DataNotFoundException("該当する従業員は存在しません");
         }
+        return bodyDataList;
     }
 
     //Id で従業員を検索

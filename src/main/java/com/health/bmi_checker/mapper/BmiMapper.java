@@ -18,7 +18,7 @@ public interface BmiMapper {
 
     //部分一致検索
     @Select("SELECT * FROM BMIs WHERE name LIKE CONCAT(#{startsWith}, '%')")
-    Optional<BodyData> findByNameStartingWith(String startsWith);
+    List<BodyData> findByNameStartingWith(String startsWith);
 
     //該当する ID を持つレコードを検索
     @Select("SELECT * FROM BMIs WHERE id = #{id}")
