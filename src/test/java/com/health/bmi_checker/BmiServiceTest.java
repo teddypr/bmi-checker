@@ -70,7 +70,7 @@ public class BmiServiceTest {
         assertEquals(expectedBodyDataList, actualBodyDataList);
 
         //スタブの呼び出しを検証
-        verify(bmiMapper, times(2)).findByNameStartingWith("タ");
+        verify(bmiMapper, times(1)).findByNameStartingWith("タ");
     }
 
 
