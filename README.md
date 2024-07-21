@@ -34,9 +34,45 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
     - レスポンス
         - ステータスコード： 200
         - ボディ： ユーザーのリストを Json 形式で返す
+        - ID が存在しない場合はステータスコード 404 を返す
       ```curl
       curl --location 'http://localhost:8080/userNames?startsWith=%E3%82%BF'
       ```
+
+200 の場合のレスポンス
+
+  ```json
+  [
+  {
+    "id": 18,
+    "name": "タカハシ　カズキ",
+    "age": 31,
+    "height": 170.6,
+    "weight": 67.8,
+    "bmi": 23.295478753011576
+  },
+  {
+    "id": 1,
+    "name": "タナカ　イチロウ",
+    "age": 20,
+    "height": 171.5,
+    "weight": 60.2,
+    "bmi": 20.46766228357232
+  }
+]
+  ```
+
+404 の場合のレスポンス
+
+  ```json
+  {
+  "message": "該当する従業員は存在しません",
+  "timestamp": "2024-07-21T13:52:04.670926+09:00[Asia/Tokyo]",
+  "error": "Not Found",
+  "path": "/userNames",
+  "status": "404"
+}
+  ```
 
 - 指定した ID のレコードを取得するAPI
 
@@ -69,7 +105,7 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
   {
     "error": "Not Found",
     "timestamp": "2024-07-07T22:23:44.657353+09:00[Asia/Tokyo]",
-    "message": "Data not found",
+    "message": "該当する従業員はいません",
     "status": "404",
     "path": "/userNames/100"
   }
@@ -139,7 +175,7 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
  ```json
   {
   "timestamp": "2024-07-15T13:53:24.763+00:00",
-  "status": 400,
+  "status": "400",
   "error": "Bad Request",
   "path": "/BMIs"
 }
