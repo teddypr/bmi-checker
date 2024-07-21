@@ -81,7 +81,8 @@ public class BmiService {
      * 従業員情報に関する Update 処理を行う
      */
     public BodyData update(int id, String name, int age, double height, double weight) {
-        BodyData bodyData = new BodyData(id, name, age, height, weight);
+        BodyData bodyData = this.bmiMapper.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("存在しない従業員 ID です: " + id));
         bmiMapper.update(bodyData);
         return bodyData;
     }
