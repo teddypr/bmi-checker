@@ -1,7 +1,7 @@
 package com.health.bmi_checker.service;
 
-import com.health.bmi_checker.DataNotFoundException;
-import com.health.bmi_checker.DuplicateNameException;
+import com.health.bmi_checker.controller.ExceptionHandler.DataNotFoundException;
+import com.health.bmi_checker.controller.ExceptionHandler.DuplicateNameException;
 import com.health.bmi_checker.entity.BodyData;
 import com.health.bmi_checker.mapper.BmiMapper;
 import org.springframework.stereotype.Service;
@@ -28,10 +28,14 @@ public class BmiService {
         List<BodyData> bodyDatas = bmiMapper.findAll();
         for (BodyData bodyData : bodyDatas) {
             double bmi = calculateBmi(bodyData.getHeight(), bodyData.getWeight());
+            bodyData.setBmi(bmi);
         }
         return bodyDatas;
     }
 
+    /**
+     * 従業員情報に関する Read 処理を行う
+     */
     //全件取得
     public List<BodyData> findAll() {
         return bmiMapper.findAll();
@@ -57,7 +61,7 @@ public class BmiService {
     }
 
     /**
-     * ユーザーに関するCreate業務処理を担う
+     * 従業員情報に関するCreate業務処理を担う
      */
     public BodyData insert(String name, int age, double height, double weight) {
         // 同姓同名の確認
@@ -72,5 +76,18 @@ public class BmiService {
         bmiMapper.insert(bodyData);
         return bodyData;
     }
+
+    /**
+     * 従業員情報に関する Update 処理を行う
+     */
+    public BodyData update(int id, String name, int age, double height, double weight) {
+        BodyData bodyData = new BodyData(id, name, age, height, weight);
+        bmiMapper.update(bodyData);
+        return bodyData;
+    }
+
+    /**
+     * 従業員情報に関する Delete 処理を行う
+     */
 
 }

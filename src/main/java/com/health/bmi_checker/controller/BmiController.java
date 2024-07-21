@@ -3,6 +3,7 @@ package com.health.bmi_checker.controller;
 import com.health.bmi_checker.entity.BodyData;
 import com.health.bmi_checker.service.BmiService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -50,8 +51,19 @@ public class BmiController {
     public ResponseEntity<BodyDataResponse> insert(@RequestBody @Valid BodyDataRequest request, UriComponentsBuilder uriBuilder) {
         BodyData bodyData = bmiService.insert(request.getName(), request.getAge(), request.getHeight(), request.getWeight());
         URI location = uriBuilder.path("/BMIs/{id}").buildAndExpand(bodyData.getId()).toUri();
-        BodyDataResponse newData = new BodyDataResponse("New data is created");
+        BodyDataResponse newData = new BodyDataResponse("従業員情報　登録完了");
         return ResponseEntity.created(location).body(newData);
+    }
+
+    /**
+     * Update処理
+     */
+    @PutMapping("/BMIs/{id}")
+    public ResponseEntity<BodyDataResponse> update(@PathVariable int id, @RequestBody @Valid BodyDataRequest request, UriComponentsBuilder uriBuilder) {
+        BodyData bodyData = bmiService.update(id, request.getName(), request.getAge(), request.getHeight(), request.getWeight());
+        URI location = uriBuilder.path("/BMIs/{id}").buildAndExpand(bodyData.getId()).toUri();
+        BodyDataResponse updatedData = new BodyDataResponse("従業員情報　更新完了");
+        return ResponseEntity.status(HttpStatus.OK).header("Location", location.toString()).body(updatedData);
     }
 
 }

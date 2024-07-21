@@ -1,4 +1,4 @@
-package com.health.bmi_checker;
+package com.health.bmi_checker.controller.ValidationConstraint;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

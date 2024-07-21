@@ -15,4 +15,8 @@ public class BodyDataResponse {
         return message;
     }
 
+    // Update用
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
