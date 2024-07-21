@@ -1,7 +1,7 @@
 package com.health.bmi_checker.service;
 
 import com.health.bmi_checker.DataNotFoundException;
-import com.health.bmi_checker.DuplicateDataException;
+import com.health.bmi_checker.DuplicateNameException;
 import com.health.bmi_checker.entity.BodyData;
 import com.health.bmi_checker.mapper.BmiMapper;
 import org.springframework.stereotype.Service;
@@ -39,16 +39,20 @@ public class BmiService {
 
     //クエリ文字で部分一致検索
     public List<BodyData> findAcronym(String startsWith) {
-        return bmiMapper.findByNameStartingWith(startsWith);
+        List<BodyData> bodyDataList = bmiMapper.findByNameStartingWith(startsWith);
+        if (bodyDataList.isEmpty()) {
+            throw new DataNotFoundException("該当する従業員は存在しません");
+        }
+        return bodyDataList;
     }
 
-    //Id で分岐処理
+    //Id で従業員を検索
     public BodyData findId(int id) {
         Optional<BodyData> bodyData = bmiMapper.findById(id);
         if (bodyData.isPresent()) {
             return bodyData.get();
         } else {
-            throw new DataNotFoundException("Data not found");
+            throw new DataNotFoundException("該当する従業員は存在しません");
         }
     }
 
@@ -60,7 +64,7 @@ public class BmiService {
         List<BodyData> existingData = findAll();
         for (BodyData data : existingData) {
             if (data.getName().equals(name)) {
-                throw new DuplicateDataException("同じ名前のデータが既に存在します");
+                throw new DuplicateNameException("同姓同名の従業員が既に存在します");
             }
         }
 

@@ -15,6 +15,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,29 +53,49 @@ public class BmiServiceTest {
     }
 
     @Test
-    public void 存在する名前の頭文字を指定した時に正常にユーザーが返されること() {
+    void 存在する名前の頭文字を指定した時に正常に従業員情報が返されること() {
         // Arrange
-        List<BodyData> HdBodydata = Arrays.asList(
-                new BodyData(1, "タナカ イチロウ", 20, 171.5, 60.2)
+        String startsWith = "タ";
+        List<BodyData> expectedBodyDataList = Arrays.asList(
+                new BodyData(1, "タナカ　イチロウ", 20, 171.5, 60.2),
+                new BodyData(18, "タカハシ　カズキ", 31, 170.6, 67.8)
         );
-        when(bmiMapper.findByNameStartingWith("タ")).thenReturn(HdBodydata);
+
+        when(bmiMapper.findByNameStartingWith(startsWith)).thenReturn(expectedBodyDataList);
 
         // Act
-        List<BodyData> actualList = bmiService.findAcronym("タ");
+        List<BodyData> actualBodyDataList = bmiService.findAcronym(startsWith);
 
         // Assert
-        assertThat(actualList).isNotNull();
-        assertThat(actualList.size()).isEqualTo(1);
-        BodyData actual = actualList.get(0);
-        assertThat(actual).isEqualToComparingFieldByField(new BodyData(1, "タナカ イチロウ", 20, 171.5, 60.2));
-        assertThat(actual.getBmi()).isEqualTo(20.46766228357232);
+        assertEquals(expectedBodyDataList, actualBodyDataList);
 
         //スタブの呼び出しを検証
         verify(bmiMapper, times(1)).findByNameStartingWith("タ");
     }
 
+
     @Test
-    public void 存在するユーザーのIDを指定したときに正常にユーザーが返されること() {
+    public void 存在しない名前の頭文字を指定した時に例外が発生すること() {
+        //Arrange
+        String startsWith = "ン";
+
+        when(bmiMapper.findByNameStartingWith(startsWith)).thenReturn(Arrays.asList());
+
+        // Act ＆ Assert
+        DataNotFoundException thrown = assertThrows(
+                DataNotFoundException.class,
+                () -> bmiService.findAcronym(startsWith)
+        );
+
+        assertEquals("該当する従業員は存在しません", thrown.getMessage());
+
+        //スタブの呼び出しを検証
+        verify(bmiMapper, times(1)).findByNameStartingWith("ン");
+    }
+
+
+    @Test
+    public void 存在するユーザーのIDを指定した時に正常にユーザーが返されること() {
         //Arrange
         doReturn(Optional.of(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0))).when(bmiMapper).findById(2);
 
@@ -90,7 +112,7 @@ public class BmiServiceTest {
 
     //例外をthrowする場合の検証はどう書くのか　assertThatThrowBy　DoNothing
     @Test
-    public void 存在しないIDを指定した場合は例外が発生すること() {
+    public void 存在しないIDを指定した時に例外が発生すること() {
         //Arrange
         doReturn(Optional.empty()).when(bmiMapper).findById(100);
 
@@ -98,12 +120,13 @@ public class BmiServiceTest {
         assertThatThrownBy(() -> {
             bmiService.findId(100);
         }).isInstanceOf(DataNotFoundException.class)
-                .hasMessage("Data not found");
+                .hasMessage("該当する従業員は存在しません");
 
         //スタブの呼び出しを検証
         verify(bmiMapper, times(1)).findById(100);
 
     }
+
 
     /**
      * POSTコード

@@ -38,9 +38,9 @@ public class BmicheckerApiExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(DuplicateDataException.class)
+    @ExceptionHandler(DuplicateNameException.class)
     public ResponseEntity<Map<String, String>> handleDuplicateDataException(
-            DuplicateDataException e, HttpServletRequest request) {
+            DuplicateNameException e, HttpServletRequest request) {
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),
                 "status", String.valueOf(HttpStatus.CONFLICT.value()), // ステータスコード409を返す

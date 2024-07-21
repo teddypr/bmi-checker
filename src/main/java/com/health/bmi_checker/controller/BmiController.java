@@ -28,13 +28,11 @@ public class BmiController {
     public List<BodyData> getBodyDatas() {
         List<BodyData> bodydatas = bmiService.findAll();
         return bodydatas;
-
     }
 
     //クエリ文字列を指定して検索するAPIを実装 @RequestParam＋型＋クエリ文字
     @GetMapping("/userNames")
-    public List<BodyData> getBodyDatas(@RequestParam String startsWith) {
-        List<BodyData> bodydatas = bmiService.findAcronym(startsWith);
+    public List<BodyData> findByNameStartingWith(@RequestParam String startsWith) {
         return bmiService.findAcronym(startsWith);
     }
 
