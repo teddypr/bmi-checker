@@ -66,4 +66,14 @@ public class BmiController {
         return ResponseEntity.status(HttpStatus.OK).header("Location", location.toString()).body(updatedData);
     }
 
+    /**
+     * Delete処理
+     */
+    @DeleteMapping("BMIs/{id}")
+    public ResponseEntity<BodyDataResponse> delete(@PathVariable("id") int id) {
+        BodyData bodyData = bmiService.delete(id);
+        BodyDataResponse deleteData = new BodyDataResponse("従業員情報　削除完了");
+        return ResponseEntity.ok(deleteData);
+    }
+
 }

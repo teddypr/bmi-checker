@@ -89,5 +89,11 @@ public class BmiService {
     /**
      * 従業員情報に関する Delete 処理を行う
      */
+    public BodyData delete(int id) {
+        BodyData bodyData = this.bmiMapper.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("存在しない従業員 ID です: " + id));
+        bmiMapper.delete(id);
+        return bodyData;
+    }
 
 }

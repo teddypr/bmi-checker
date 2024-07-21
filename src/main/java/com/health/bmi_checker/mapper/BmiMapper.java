@@ -30,4 +30,8 @@ public interface BmiMapper {
     @Update("UPDATE BMIs SET name = #{name}, age = #{age}, height = #{height}, weight = #{weight} WHERE id = #{id}")
     void update(BodyData bodyData);
 
+    //デリート用
+    @Delete("DELETE FROM BMIs WHERE id = #{id}")
+    void delete(int id);
+
 }
