@@ -53,22 +53,4 @@ public class BodyDataRequest {
         return weight;
     }
 
-
-    // Update処理 に使用する setter
-    public void setName(@NotBlank(message = "名前は必須項目です") @Size(max = 20, message = "名前は {max} 字以内で入力してください") String name) {
-        this.name = name;
-    }
-
-    public void setAge(@NotNull(message = "年齢は必須項目です") @Positive(message = "年齢は正の整数でなければなりません") int age) {
-        this.age = age;
-    }
-
-    public void setHeight(@NotNull(message = "身長は必須項目です") @Positive(message = "身長は単位メートルで正の数でなければなりません") double height) {
-        this.height = height;
-    }
-
-    public void setWeight(@NotNull(message = "体重は必須項目です") @Positive(message = "体重はキログラム単位で正の数でなければなりません") double weight) {
-        this.weight = weight;
-    }
-
 }
