@@ -1,7 +1,7 @@
 package com.health.bmi_checker.service;
 
-import com.health.bmi_checker.controller.ExceptionHandler.DataNotFoundException;
-import com.health.bmi_checker.controller.ExceptionHandler.DuplicateNameException;
+import com.health.bmi_checker.controller.exceptionHandler.DataNotFoundException;
+import com.health.bmi_checker.controller.exceptionHandler.DuplicateNameException;
 import com.health.bmi_checker.entity.BodyData;
 import com.health.bmi_checker.mapper.BmiMapper;
 import org.springframework.stereotype.Service;

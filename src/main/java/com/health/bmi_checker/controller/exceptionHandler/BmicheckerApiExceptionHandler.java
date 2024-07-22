@@ -1,4 +1,4 @@
-package com.health.bmi_checker.controller.ExceptionHandler;
+package com.health.bmi_checker.controller.exceptionHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

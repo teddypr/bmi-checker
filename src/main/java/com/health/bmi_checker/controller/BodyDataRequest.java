@@ -1,6 +1,6 @@
 package com.health.bmi_checker.controller;
 
-import com.health.bmi_checker.controller.ValidationConstraint.RoundDownConstraint;
+import com.health.bmi_checker.controller.validationConstraint.RoundDownConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
