@@ -161,17 +161,11 @@ public class BmiServiceTest {
     public void 従業員情報が正常に更新できること() {
         //Arrange
         BodyData existingBodyData = new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0);
-
-        //Act
         doReturn(Optional.of(existingBodyData)).when(bmiMapper).findById(2);
         doNothing().when(bmiMapper).update(any(BodyData.class));
-        BodyData actual = bmiService.update(2, "Update User", 35, 184.0, 89.0);
 
-        // Update expected data manually
-        existingBodyData.setName("Update User");
-        existingBodyData.setAge(35);
-        existingBodyData.setHeight(184.0);
-        existingBodyData.setWeight(89.0);
+        //Act
+        BodyData actual = bmiService.update(2, "Update User", 35, 184.0, 89.0);
 
         //Assert
         assertThat(actual).isEqualTo(existingBodyData);
@@ -200,6 +194,5 @@ public class BmiServiceTest {
         verify(bmiMapper, times(0)).update(any(BodyData.class));
 
     }
-
 
 }
