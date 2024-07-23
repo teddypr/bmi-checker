@@ -61,7 +61,7 @@ public class BmiService {
     }
 
     /**
-     * 従業員情報に関するCreate業務処理を担う
+     * 従業員情報に関するCreate業務処理を行う
      */
     public BodyData insert(String name, int age, double height, double weight) {
         // 同姓同名の確認

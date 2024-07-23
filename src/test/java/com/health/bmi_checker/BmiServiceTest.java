@@ -18,7 +18,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class BmiServiceTest {
@@ -30,7 +35,7 @@ public class BmiServiceTest {
     BmiMapper bmiMapper;
 
     /**
-     * GETテスト
+     * READ処理テスト
      */
     @Test
     public void 全てのユーザーが正常に返されること() {
@@ -111,6 +116,7 @@ public class BmiServiceTest {
         verify(bmiMapper, times(1)).findById(2);
     }
 
+
     //例外をthrowする場合の検証はどう書くのか　assertThatThrowBy　DoNothing
     @Test
     public void 存在しないIDを指定した時に例外が発生すること() {
@@ -130,7 +136,7 @@ public class BmiServiceTest {
 
 
     /**
-     * POSTコード
+     * Create処理テスト
      */
     @Test
     public void 正常に新規のユーザーが登録できること() {
@@ -147,5 +153,53 @@ public class BmiServiceTest {
         verify(bmiMapper, times(1)).insert(any(BodyData.class));
 
     }
+
+    /**
+     * Update処理テスト
+     */
+    @Test
+    public void 従業員情報が正常に更新できること() {
+        //Arrange
+        BodyData existingBodyData = new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0);
+
+        //Act
+        doReturn(Optional.of(existingBodyData)).when(bmiMapper).findById(2);
+        doNothing().when(bmiMapper).update(any(BodyData.class));
+        BodyData actual = bmiService.update(2, "Update User", 35, 184.0, 89.0);
+
+        // Update expected data manually
+        existingBodyData.setName("Update User");
+        existingBodyData.setAge(35);
+        existingBodyData.setHeight(184.0);
+        existingBodyData.setWeight(89.0);
+
+        //Assert
+        assertThat(actual).isEqualTo(existingBodyData);
+
+        // スタブの呼び出しを検証
+        verify(bmiMapper, times(1)).findById(2);
+        verify(bmiMapper, times(1)).update(existingBodyData);
+
+    }
+
+    @Test
+    public void 存在しないIDの従業員情報を更新しようとした時に例外が発生すること() {
+        // Arrange
+        int nonExistentId = 999;
+
+        // Act
+        doReturn(Optional.empty()).when(bmiMapper).findById(nonExistentId);
+
+        // Assert
+        assertThatThrownBy(() -> bmiService.update(nonExistentId, "タナカ　イチロウ", 20, 171.5, 60.2))
+                .isInstanceOf(DataNotFoundException.class)
+                .hasMessageContaining("存在しない従業員 ID です: " + nonExistentId);
+
+        // スタブの呼び出しを検証
+        verify(bmiMapper, times(1)).findById(nonExistentId);
+        verify(bmiMapper, times(0)).update(any(BodyData.class));
+
+    }
+
 
 }
