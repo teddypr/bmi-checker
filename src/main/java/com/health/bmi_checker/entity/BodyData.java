@@ -97,4 +97,15 @@ public class BodyData {
         return Objects.hash(id, name, age, height, weight, bmi);
     }
 
+    @Override
+    public String toString() {
+        return "BodyData{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", bmi=" + bmi +
+                '}';
+    }
 }
