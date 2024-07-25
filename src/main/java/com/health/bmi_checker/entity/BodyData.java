@@ -99,13 +99,12 @@ public class BodyData {
 
     @Override
     public String toString() {
-        return "BodyData{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", height=" + height +
-                ", weight=" + weight +
-                ", bmi=" + bmi +
-                '}';
+        return "{\"id\":" + id +
+                ",\"name\":\"" + name + "\"" +
+                ",\"age\":" + age +
+                ",\"height\":" + height +
+                ",\"weight\":" + weight +
+                ",\"bmi\":" + bmi + "}";
     }
+
 }

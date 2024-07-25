@@ -1,5 +1,3 @@
-package com.health.bmi_checker;
-
 import com.health.bmi_checker.controller.exceptionHandler.DataNotFoundException;
 import com.health.bmi_checker.entity.BodyData;
 import com.health.bmi_checker.mapper.BmiMapper;
