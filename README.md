@@ -23,7 +23,7 @@
 | 従業員名前検索 |  GET   | /userNames?startsWith={acronym} |
 | 従業員ID検索 |  GET   |         /userNames/{id}         |
 | 従業員新規登録 |  POST  |              /BMIs              |
-| 従業員更新処理 |  PUT   |           /BMIs/{id}            |
+| 従業員更新処理 | PATCH  |           /BMIs/{id}            |
 | 従業員削除処理 | DELETE |           /BMIs/{id}            |
 
 #### Read機能（GET）
@@ -199,7 +199,7 @@
 - ユーザー情報を登録するAPI
 
     - リクエスト
-        - Method: PUT
+        - Method: PATCH
         - URL: /BMIs/{id}
     - レスポンス
         - ステータスコード： 200
