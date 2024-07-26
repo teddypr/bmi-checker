@@ -21,7 +21,7 @@ public class BmiService {
 
     // bmi 計算
     public double calculateBmi(double height, double weight) {
-        return (weight / (height / 100 * height / 100));
+        return (weight / (height / 100) * (height / 100));
     }
 
     public List<BodyData> BMIs() {
@@ -80,9 +80,23 @@ public class BmiService {
     /**
      * 従業員情報に関する Update 処理を行う
      */
-    public BodyData update(int id, String name, int age, double height, double weight) {
+    public BodyData update(int id, String name, Integer age, Double height, Double weight) {
         BodyData bodyData = this.bmiMapper.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("存在しない従業員 ID です: " + id));
+
+        if (name != null) {
+            bodyData.setName(name);
+        }
+        if (age != null) {
+            bodyData.setAge(age);
+        }
+        if (height != null) {
+            bodyData.setHeight(height);
+        }
+        if (weight != null) {
+            bodyData.setWeight(weight);
+        }
+
         bmiMapper.update(bodyData);
         return bodyData;
     }
