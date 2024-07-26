@@ -162,10 +162,10 @@ public class BmiServiceTest {
         doNothing().when(bmiMapper).update(any(BodyData.class));
 
         // Act
-        BodyData actual = bmiService.update(2, "Update User", 35, 184.0, 89.0);
-
+        BodyData updatedBodyData = bmiService.update(2, "Update User", 35, 184.0, 89.0);
+        
         // Assert
-        assertThat(actual).isEqualTo(existingBodyData);
+        assertThat(updatedBodyData).isEqualTo(existingBodyData);
 
         // スタブの呼び出しを検証
         verify(bmiMapper, times(1)).findById(2);
@@ -190,6 +190,9 @@ public class BmiServiceTest {
 
     }
 
+    /**
+     * Delete処理テスト
+     */
     @Test
     public void 指定したIDに紐づいて従業員情報が正常に削除できること() {
         // Arrange
