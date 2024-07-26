@@ -1,6 +1,6 @@
 package com.health.bmi_checker.controller;
 
-import com.health.bmi_checker.RoundDownConstraint;
+import com.health.bmi_checker.controller.validationConstraint.RoundDownConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -52,4 +52,5 @@ public class BodyDataRequest {
     public double getWeight() {
         return weight;
     }
+
 }

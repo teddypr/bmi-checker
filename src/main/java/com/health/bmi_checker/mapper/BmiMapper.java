@@ -1,10 +1,12 @@
 package com.health.bmi_checker.mapper;
 
 import com.health.bmi_checker.entity.BodyData;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,5 +30,13 @@ public interface BmiMapper {
     @Insert("INSERT INTO BMIs (name, age, height, weight) VALUES (#{name}, #{age}, #{height}, #{weight})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(BodyData bodyData);
+
+    //アップデート用
+    @Update("UPDATE BMIs SET name = #{name}, age = #{age}, height = #{height}, weight = #{weight} WHERE id = #{id}")
+    void update(BodyData bodyData);
+
+    //デリート用
+    @Delete("DELETE FROM BMIs WHERE id = #{id}")
+    void delete(int id);
 
 }

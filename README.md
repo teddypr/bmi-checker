@@ -1,19 +1,32 @@
 # 肥満度管理システム
 
-このプロジェクトでは 従業員の BMI を管理する RESTful な Web API を作成します。
-CRUD 機能を持ち、従業員のボディデータの読み取り、登録、更新、削除を行うことができます。
+## 使用技術一覧
+
+## サービス概要
+
+- このプロジェクトでは 従業員の BMI を管理する RESTful な Web API を作成します。
+- 名前、年齢、身長、体重をセットに id で紐づけて登録します。登録の際 id は自動で採番されます。
+- これらの従業員のボディデータの読み取り、登録、更新、削除を行うことができます。
+- 読み取りの際は、データベース内の身長、体重の情報から自動で肥満度指数 BMI を計算して返します。
 
 ## 開発環境
 
 - Java 17
 - Spring Boot 3.3.1
 - MySQL 8
-- JUnit
-- Mockito
 
 ## 機能一覧
 
-### Read機能
+| API     | Method |              Path               |
+|:--------|:------:|:-------------------------------:|
+| 従業員全件検索 |  GET   |              /BMIs              |
+| 従業員名前検索 |  GET   | /userNames?startsWith={acronym} |
+| 従業員ID検索 |  GET   |         /userNames/{id}         |
+| 従業員新規登録 |  POST  |              /BMIs              |
+| 従業員更新処理 | PATCH  |           /BMIs/{id}            |
+| 従業員削除処理 | DELETE |           /BMIs/{id}            |
+
+#### Read機能（GET）
 
 - 従業員の名前を全件取得するAPI
     - リクエスト
@@ -65,7 +78,7 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
 404 の場合のレスポンス
 
   ```json
-  {
+{
   "message": "該当する従業員は存在しません",
   "timestamp": "2024-07-21T13:52:04.670926+09:00[Asia/Tokyo]",
   "error": "Not Found",
@@ -113,7 +126,7 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
 
 <br>
 
-### Create処理
+#### Create処理（POST）
 
 - ユーザー情報を登録するAPI
 
@@ -168,8 +181,6 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
   }
   ```
 
-　
-
 - json の形式に誤りがある時（Postman に赤線が入る時）
 
  ```json
@@ -180,3 +191,162 @@ CRUD 機能を持ち、従業員のボディデータの読み取り、登録、
   "path": "/BMIs"
 }
   ```
+
+<br>
+
+#### Update処理（PUT）
+
+- ユーザー情報を登録するAPI
+
+    - リクエスト
+        - Method: PATCH
+        - URL: /BMIs/{id}
+    - レスポンス
+        - ステータスコード： 200
+        - ボディ： Json形式で "従業員情報 更新完了" を返す
+        - 存在しないIDを指定された場合は、ステータスコード 404 を返す
+
+200 の場合のレスポンス
+
+```json
+{
+  "message": "従業員情報　更新完了"
+}
+```
+
+404 の場合のレスポンス
+
+```json
+{
+  "error": "Not Found",
+  "timestamp": "2024-07-21T23:32:28.013531+09:00[Asia/Tokyo]",
+  "message": "存在しない従業員 ID です: 100",
+  "status": "404",
+  "path": "/BMIs/100"
+}
+```
+
+<br>
+
+#### Delete処理 (DELETE)
+
+- ユーザー情報を登録するAPI
+
+    - リクエスト
+        - Method: DELETE
+        - URL: /BMIs/{id}
+    - レスポンス
+        - ステータスコード： 200
+        - ボディ： Json形式で "従業員情報 削除完了" を返す
+        - 存在しないIDを指定された場合は、ステータスコード 404 を返す
+
+200 の場合のレスポンス
+
+```json
+{
+  "message": "従業員情報　削除完了"
+}
+```
+
+404 の場合のレスポンス
+
+```json
+{
+  "error": "Not Found",
+  "path": "/BMIs/100",
+  "status": "404",
+  "message": "存在しない従業員 ID です: 100",
+  "timestamp": "2024-07-21T22:57:39.008982+09:00[Asia/Tokyo]"
+}
+```
+
+## DBについて
+
+### テーブル名： BMIs
+
+| column |  data type   | Nou null | description |    memo    |
+|:------:|:------------:|:--------:|:-----------:|:----------:|
+|   id   |     int      | NOTNULL  |   id自動採番    | primaryKey |
+|  name  | VARCHAR(255) | NOTNULL  |     名前      |   UNIQUE   |
+|  age   |     int      | NOTNULL  |     年齢      |            |
+| height | VARCHAR(255) | NOTNULL  |     身長      |            |
+| weight | VARCHAR(255) | NOTNULL  |     体重      |            |
+
+## シーケンス図
+
+これから作成します
+
+```mermaid
+
+sequenceDiagram
+    Client ->> WebAPI: ユーザーを全件取得(/BMIs)
+    WebAPI ->> DB: DBにアクセス
+    DB -->> WebAPI: ユーザー情報をリストで取得
+    WebAPI -->> Client: 200 OK ユーザー情報をリストで取得
+    Client ->> WebAPI: ユーザー情報を指定検索(/userNames/{条件})
+    participant Client
+    Note right of Client: query-search: /userNames/?startsWith={name} <br> path-search: /userNames/{id}
+    WebAPI ->> DB: DBにアクセス
+    DB -->> WebAPI: 指定検索をもとにユーザー情報を取得
+    WebAPI -->> Client: 200 OK 指定されたユーザーを返す
+    break
+        DB -->> WebAPI: 指定したユーザーが存在しない
+    end
+    break
+        WebAPI -->> Client: 404 NotFoundを返す
+    end
+
+    Client ->> WebAPI: ユーザー情報を新規登録(/BMIs)
+    WebAPI ->> DB: ユーザーを登録
+    break
+        WebAPI -->> Client: 400 Bad Request Validationエラー
+    end
+    DB -->> WebAPI: IDを自動採番して登録
+    WebAPI -->> Client: 201 create 登録されたことを返す
+    break
+        DB -->> WebAPI: 指定したユーザーが存在しない
+    end
+    break
+        WebAPI -->> Client: 404 NotFound を返す
+    end
+    break
+        DB -->> WebAPI: 既存のユーザーと同じ name を登録
+    end
+    break
+        WebAPI -->> Client: 409 Conflict を返す
+    end
+    Client ->> WebAPI: 更新したいユーザー情報を送信(/BMIs/{id})
+    break
+        WebAPI -->> Client: 400 Bad Request Validationエラー
+    end
+    WebAPI ->> DB: DBにアクセス
+    DB -->> WebAPI: 指定したidのユーザーを更新
+    WebAPI -->> Client: 200 OK 更新されたことを返す
+    break
+        DB -->> WebAPI: 指定したユーザーが存在しない
+    end
+    break
+        WebAPI -->> Client: 404 NotFound を返す
+    end
+
+    Client ->> WebAPI: 削除したいユーザーidを送信(/BMIs/{id})
+    WebAPI ->> DB: DBにアクセス
+    DB -->> WebAPI: 指定したidのユーザーを削除
+    WebAPI -->> Client: 200 OK 削除されたことを返す
+    break
+        DB -->> WebAPI: 指定したユーザーが存在しない
+    end
+    break
+        WebAPI -->> Client: 404 NotFound を返す
+    end
+
+```
+
+## 自動テスト
+
+以下の自動テストを実装
+
+- (途中) BmiService の単体テスト
+- (未) BmiMapperのDBテスト
+- (未) BmiIntegrationテストの実装（結合テスト）
+
