@@ -43,7 +43,9 @@ public class BmiServiceTest {
         List<BodyData> bodyData = List.of(
                 new BodyData(1, "タナカ　イチロウ", 20, 171.5, 60.2),
                 new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0),
-                new BodyData(3, "ムラタ　サブロウ", 26, 167.9, 101.3)
+                new BodyData(3, "ムラタ　サブロウ", 26, 167.9, 101.3),
+                new BodyData(4, "タカハシ　カズキ", 31, 170.6, 67.8)
+                
         );
         doReturn(bodyData).when(bmiMapper).findAll();
 

@@ -14,3 +14,8 @@ bmis:
     age: 26
     height: 167.9
     weight: 101.3
+  - id: 4
+    name: "タカハシ　カズキ"
+    age: 31
+    height: 170.6
+    weight: 67.8
