@@ -260,6 +260,8 @@
 }
 ```
 
+<br>
+
 ## DBについて
 
 ### テーブル名： BMIs
@@ -269,12 +271,10 @@
 |   id   |     int      | NOTNULL  |   id自動採番    | primaryKey |
 |  name  | VARCHAR(255) | NOTNULL  |     名前      |   UNIQUE   |
 |  age   |     int      | NOTNULL  |     年齢      |            |
-| height | VARCHAR(255) | NOTNULL  |     身長      |            |
-| weight | VARCHAR(255) | NOTNULL  |     体重      |            |
+| height |  FLOAT(5,1)  | NOTNULL  |     身長      |            |
+| weight |  FLOAT(5,1)  | NOTNULL  |     体重      |            |
 
 ## シーケンス図
-
-これから作成します
 
 ```mermaid
 
@@ -346,7 +346,7 @@ sequenceDiagram
 
 以下の自動テストを実装
 
-- (途中) BmiService の単体テスト
+- BmiService の単体テスト
 - (未) BmiMapperのDBテスト
 - (未) BmiIntegrationテストの実装（結合テスト）
 

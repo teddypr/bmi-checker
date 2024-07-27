@@ -62,7 +62,7 @@ public class BmiServiceTest {
         String startsWith = "タ";
         List<BodyData> expectedBodyDataList = Arrays.asList(
                 new BodyData(1, "タナカ　イチロウ", 20, 171.5, 60.2),
-                new BodyData(18, "タカハシ　カズキ", 31, 170.6, 67.8)
+                new BodyData(4, "タカハシ　カズキ", 31, 170.6, 67.8)
         );
 
         when(bmiMapper.findByNameStartingWith(startsWith)).thenReturn(expectedBodyDataList);
@@ -163,7 +163,7 @@ public class BmiServiceTest {
 
         // Act
         BodyData updatedBodyData = bmiService.update(2, "Update User", 35, 184.0, 89.0);
-        
+
         // Assert
         assertThat(updatedBodyData).isEqualTo(existingBodyData);
 
