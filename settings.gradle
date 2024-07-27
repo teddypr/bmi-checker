@@ -1,1 +1,4 @@
 rootProject.name = 'BMI-check'
+include 'src:test:resources'
+findProject(':src:test:resources')?.name = 'resources'
+

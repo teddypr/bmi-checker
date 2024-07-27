@@ -1,0 +1,16 @@
+bmis:
+  - id: 1
+    name: "タナカ　イチロウ"
+    age: 20
+    height: 171.5
+    weight: 60.2
+  - id: 2
+    name: "スズキ　ジロウ"
+    age: 18
+    height: 181.0
+    weight: 88.0
+  - id: 3
+    name: "ムラタ　サブロウ"
+    age: 26
+    height: 167.9
+    weight: 101.3
