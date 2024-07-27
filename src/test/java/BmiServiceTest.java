@@ -107,7 +107,7 @@ public class BmiServiceTest {
         BodyData actual = bmiService.findId(2);
 
         // Assert
-        assertThat(actual).isEqualToComparingFieldByField(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0));
+        assertThat(actual).isEqualTo(new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0));
         assertThat(actual.getBmi()).isEqualTo(26.861206922865602);
 
         // スタブの呼び出しを検証
