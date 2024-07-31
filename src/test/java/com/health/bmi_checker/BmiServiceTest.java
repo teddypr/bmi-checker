@@ -45,7 +45,7 @@ public class BmiServiceTest {
                 new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0),
                 new BodyData(3, "ムラタ　サブロウ", 26, 167.9, 101.3),
                 new BodyData(4, "タカハシ　カズキ", 31, 170.6, 67.8)
-                
+
         );
         doReturn(bodyData).when(bmiMapper).findAll();
 
@@ -128,7 +128,7 @@ public class BmiServiceTest {
         assertThatThrownBy(() -> {
             bmiService.findId(100);
         }).isInstanceOf(DataNotFoundException.class)
-                .hasMessage("該当する従業員は存在しません");
+                .hasMessage("存在しない従業員 ID です: " + 100);
 
         // スタブの呼び出しを検証
         verify(bmiMapper, times(1)).findById(100);

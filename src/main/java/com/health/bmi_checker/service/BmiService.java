@@ -56,7 +56,7 @@ public class BmiService {
         if (bodyData.isPresent()) {
             return bodyData.get();
         } else {
-            throw new DataNotFoundException("該当する従業員は存在しません");
+            throw new DataNotFoundException("存在しない従業員 ID です: " + id);
         }
     }
 
