@@ -347,6 +347,6 @@ sequenceDiagram
 以下の自動テストを実装
 
 - BmiService の単体テスト
-- (未) BmiMapperのDBテスト
-- (未) BmiIntegrationテストの実装（結合テスト）
+- BmiMapperのDBテスト
+- BmiIntegrationテスト(結合テスト)の実装
 
