@@ -281,8 +281,6 @@ public class integrationTest {
                                 "message": "従業員情報　削除完了"
                             }
                             """));
-
-
         }
 
         @Test
