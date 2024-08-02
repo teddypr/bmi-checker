@@ -23,7 +23,6 @@ jobs:
 
       - name: Setup DB
         run: docker compose up -d
-          docker ps -a
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
@@ -31,11 +30,8 @@ jobs:
       - name: Test with Gradle Wrapper
         run: ./gradlew test --info
 
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v2
-        if: always()
-        with:
-          report_paths: '**/build/test-results/test/TEST-*.xml'
+      - name: Check for Test Report
+        run: ls -R build/test-results/test/
 
       - name: Discord
         uses: sarisia/actions-status-discord@v1
@@ -44,3 +40,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
           with:
           status: ${{ job.status }}
+
