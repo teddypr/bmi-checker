@@ -32,7 +32,7 @@ public class IntegrationTest {
     class ReadClass {
 
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         void 全ての従業員情報が正常に返されること() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.get("/BMIs")).andExpect(MockMvcResultMatchers.status().isOk())
                     //レスポンスボディの検証
@@ -76,7 +76,7 @@ public class IntegrationTest {
         }
 
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         void 指定した名前の頭文字で従業員情報が正常に返されること() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.get("/userNames?startsWith=タ")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().json("""
                     [
@@ -101,7 +101,7 @@ public class IntegrationTest {
         }
 
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         @Transactional
         void 存在しない名前を指定したとき404エラーを返すこと() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.get("/userNames?startsWith=ン"))
@@ -114,7 +114,7 @@ public class IntegrationTest {
         }
 
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         void 指定したIDの従業員情報を取得できること() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.get("/userNames/1")).andExpect(MockMvcResultMatchers.status().isOk())
 
@@ -131,7 +131,7 @@ public class IntegrationTest {
         }
 
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         @Transactional
         void 存在しないIDを指定したとき404エラーを返すこと() throws Exception {
 
@@ -149,7 +149,7 @@ public class IntegrationTest {
     @Nested
     class CreateClass {
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         @ExpectedDataSet(value = "datasets/expectedInsertBodyData.yml", ignoreCols = "id")
         void 新規従業員情報が正常に挿入できること() throws Exception {
             String requestBody = """
@@ -172,7 +172,7 @@ public class IntegrationTest {
         }
 
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         void 不正なフォーマットで登録しようとしたとき400エラーを返すこと() throws Exception {
             String exceptionRequestBody = """
                     {
@@ -231,7 +231,7 @@ public class IntegrationTest {
     @Nested
     class UpdateClass {
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         @ExpectedDataSet(value = "datasets/expectedUpdatedBodyData.yml")
         void 従業員情報が正常に更新できること() throws Exception {
             String requestBody = """
@@ -254,7 +254,7 @@ public class IntegrationTest {
         }
 
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         @Transactional
         void 存在しないIDでユーザーの更新をしようとすると404エラーを返すこと() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.delete("/BMIs/100"))
@@ -271,7 +271,7 @@ public class IntegrationTest {
     @Nested
     class DeleteClass {
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         @ExpectedDataSet(value = "datasets/expectedDeletedBodyData.yml")
         void 指定したIDの従業員情報が正常に削除できること() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.delete("/BMIs/1"))
@@ -284,7 +284,7 @@ public class IntegrationTest {
         }
 
         @Test
-        @DataSet(value = "datasets/bodydatas.yml")
+        @DataSet(value = "datasets/bodydata.yml")
         void 存在しないIDで削除を行おうとしたとき404エラーを返すこと() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.delete("/BMIs/0"))
                     .andExpect(MockMvcResultMatchers.status().isNotFound())
