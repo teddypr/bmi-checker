@@ -1,40 +1,107 @@
 openapi: 3.0.0
 info:
-  title: 従業員BMI API
-  description: 従業員のBMIデータを管理するためのAPI
+  title: bmi-checker
+  description: 従業員のボディデータ情報（age, height, weight）を管理するAPIです。
   version: 1.0.0
+servers:
+  - url: https://teddypr.github.io/bmi-checker/
+tags:
+  - name: "従業員情報を取得する"
+    description: "全件取得・ID検索・名前検索"
+  - name: "従業員を新規に登録する"
+    description: "新規に従業員を登録する"
+  - name: "従業員情報を更新する"
+    description: "登録されている従業員の情報をIDで検索し更新する"
+  - name: "従業員情報を削除する"
+    description: "従業員情報をIDで検索し削除する"
 
 paths:
   /BMIs:
     get:
-      summary: 全ての従業員の名前を取得するAPI
-      description: 従業員のBMI情報を全件取得します。
+      tags:
+        - "従業員情報を取得する"
+      summary: "登録されている従業員を全件取得する"
+      description: "登録されている全従業員の情報を取得する"
       responses:
         '200':
-          description: 全従業員のリストをJSON形式で返す
+          description: "OK"
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Employee'
-      x-code-samples:
-        - lang: curl
-          source: |
-            curl --location 'http://localhost:8080/BMIs'
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    age:
+                      type: integer
+                    height:
+                      type: number
+                      format: float
+                    weight:
+                      type: number
+                      format: float
+                    bmi:
+                      type: number
+                      format: float
+              example:
+                - id: 1
+                  name: "タナカ　イチロウ"
+                  age: 20
+                  height: 171.5
+                  weight: 60.2
+                  bmi: 20.46766228357232
+                - id: 2
+                  name: "スズキ　ジロウ"
+                  age: 18
+                  height: 181.0
+                  weight: 88.0
+                  bmi: 26.861206922865602
+                - id: 3
+                  name: "ムラタ　サブロウ"
+                  age: 26
+                  height: 167.9
+                  weight: 101.3
+                  bmi: 35.9342059941661
+                - id: 4
+                  name: "タカハシ　カズキ"
+                  age: 31
+                  height: 170.6
+                  weight: 67.8
+                  bmi: 23.295478753011576
     post:
-      summary: 新しい従業員の情報を登録するAPI
-      description: 新しい従業員の情報を登録します。
+      tags:
+        - "従業員を新規に登録する"
+      summary: "新規従業員を登録する"
+      description: "新規従業員の情報を登録する"
       requestBody:
-        description: 新規従業員情報
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewEmployee'
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: integer
+                height:
+                  type: number
+                  format: float
+                weight:
+                  type: number
+                  format: float
+            example:
+              name: "トヨタ トミ"
+              age: 26
+              height: 163.4
+              weight: 53.3
       responses:
         '201':
-          description: 新規データ作成成功
+          description: "Created"
           content:
             application/json:
               schema:
@@ -42,78 +109,315 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "New data is created"
-        '400':
-          description: 不正な入力データによるエラー
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: "従業員情報 登録完了"
         '409':
-          description: 重複データによるエラー
+          description: "Conflict"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+                properties:
+                  status:
+                    type: string
+                  path:
+                    type: string
+                  error:
+                    type: string
+                  timestamp:
+                    type: string
+                  message:
+                    type: string
+              example:
+                status: "409"
+                path: "/BMIs"
+                error: "Conflict"
+                timestamp: "2024-07-15T22:46:24.616755+09:00"
+                message: "同姓同名の従業員が既に存在します"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: string
+                  error:
+                    type: string
+                  path:
+                    type: string
+              example:
+                timestamp: "2024-07-15T13:53:24.763+00:00"
+                status: "400"
+                error: "Bad Request"
+                path: "/BMIs"
 
   /userNames:
     get:
-      summary: クエリ文字列で指定したnameのレコードを取得するAPI
-      description: 名前の頭文字で従業員を検索します。
+      tags:
+        - "従業員情報を取得する"
+      summary: "指定した名前の従業員を取得する"
+      description: "クエリパラメータで指定した名前を含む従業員の情報を取得する"
       parameters:
         - name: startsWith
           in: query
+          description: "名前の始まりを指定するクエリパラメータ"
           required: true
           schema:
             type: string
+            example: "タ"
       responses:
         '200':
-          description: 該当する従業員のリストを返す
+          description: "OK"
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Employee'
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    age:
+                      type: integer
+                    height:
+                      type: number
+                      format: float
+                    weight:
+                      type: number
+                      format: float
+                    bmi:
+                      type: number
+                      format: float
+              example:
+                - id: 1
+                  name: "タナカ　イチロウ"
+                  age: 20
+                  height: 171.5
+                  weight: 60.2
+                  bmi: 20.46766228357232
+                - id: 4
+                  name: "タカハシ　カズキ"
+                  age: 31
+                  height: 170.6
+                  weight: 67.8
+                  bmi: 23.295478753011576
         '404':
-          description: 該当する従業員が存在しない場合のエラー
+          description: "Not Found"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      x-code-samples:
-        - lang: curl
-          source: |
-            curl --location 'http://localhost:8080/userNames?startsWith=%E3%82%BF'
+                type: object
+                properties:
+                  message:
+                    type: string
+                  timestamp:
+                    type: string
+                  error:
+                    type: string
+                  path:
+                    type: string
+                  status:
+                    type: string
+              example:
+                message: "該当する従業員は存在しません"
+                timestamp: "2024-07-21T13:52:04.670926+09:00"
+                error: "Not Found"
+                path: "/userNames"
+                status: "404"
 
   /userNames/{id}:
     get:
-      summary: 指定したIDの従業員情報を取得するAPI
-      description: 指定したIDに対応する従業員情報を取得します。
+      tags:
+        - "従業員情報を取得する"
+      summary: "指定したIDの従業員を取得する"
+      description: "指定したIDの従業員の情報を取得する"
       parameters:
         - name: id
           in: path
+          description: "従業員ID"
           required: true
           schema:
             type: integer
+            example: 1
       responses:
         '200':
-          description: 指定したIDの従業員情報を返す
+          description: "OK"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Employee'
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  age:
+                    type: integer
+                  height:
+                    type: number
+                    format: float
+                  weight:
+                    type: number
+                    format: float
+                  bmi:
+                    type: number
+                    format: float
+              example:
+                id: 1
+                name: "タナカ　イチロウ"
+                age: 20
+                height: 171.5
+                weight: 60.2
+                bmi: 20.46766228357232
         '404':
-          description: 該当する従業員が存在しない場合のエラー
+          description: "Not Found"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      x-code-samples:
-        - lang: curl
-          source: |
-            curl --location 'http://localhost:8080/userNames/1'
+                type: object
+                properties:
+                  error:
+                    type: string
+                  timestamp:
+                    type: string
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  path:
+                    type: string
+              example:
+                error: "Not Found"
+                timestamp: "2024-07-07T22:23:44.657353+09:00"
+                message: "存在しない従業員 ID です: 100"
+                status: "404"
+                path: "/userNames/100"
 
+  /BMIs/{id}:
+    patch:
+      tags:
+        - "従業員情報を更新する"
+      summary: "指定したIDの従業員情報を更新する"
+      description: "指定したIDの従業員情報を更新する"
+      parameters:
+        - name: id
+          in: path
+          description: "従業員ID"
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: integer
+                height:
+                  type: number
+                  format: float
+                weight:
+                  type: number
+                  format: float
+            example:
+              name: "Updated Name"
+              age: 18
+              height: 181.0
+              weight: 88.0
+      responses:
+        '200':
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "従業員情報 更新完了"
+        '404':
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  timestamp:
+                    type: string
+                  message:
+                    type: string
+                  status:
+                    type: string
+                  path:
+                    type: string
+              example:
+                error: "Not Found"
+                timestamp: "2024-07-21T23:32:28.013531+09:00"
+                message: "存在しない従業員 ID です: 100"
+                status: "404"
+                path: "/BMIs/100"
+    delete:
+      tags:
+        - "従業員情報を削除する"
+      summary: "指定したIDの従業員情報を削除する"
+      description: "指定したIDの従業員情報を削除する"
+      parameters:
+        - name: id
+          in: path
+          description: "従業員ID"
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "従業員情報 削除完了"
+        '404':
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  path:
+                    type: string
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  timestamp:
+                    type: string
+              example:
+                error: "Not Found"
+                path: "/BMIs/100"
+                status: "404"
+                message: "存在しない従業員 ID です: 100"
+                timestamp: "2024-07-21T22:57:39.008982+09:00"
 components:
   schemas:
     BodyData:
