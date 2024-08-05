@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  title: 従業員BMI API
+  description: 従業員のBMIデータを管理するためのAPI
+  version: 1.0.0
+
+paths:
+  /BMIs:
+    get:
+      summary: 全ての従業員の名前を取得するAPI
+      description: 従業員のBMI情報を全件取得します。
+      responses:
+        '200':
+          description: 全従業員のリストをJSON形式で返す
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+      x-code-samples:
+        - lang: curl
+          source: |
+            curl --location 'http://localhost:8080/BMIs'
+    post:
+      summary: 新しい従業員の情報を登録するAPI
+      description: 新しい従業員の情報を登録します。
+      requestBody:
+        description: 新規従業員情報
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewEmployee'
+      responses:
+        '201':
+          description: 新規データ作成成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "New data is created"
+        '400':
+          description: 不正な入力データによるエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: 重複データによるエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /userNames:
+    get:
+      summary: クエリ文字列で指定したnameのレコードを取得するAPI
+      description: 名前の頭文字で従業員を検索します。
+      parameters:
+        - name: startsWith
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 該当する従業員のリストを返す
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+        '404':
+          description: 該当する従業員が存在しない場合のエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-code-samples:
+        - lang: curl
+          source: |
+            curl --location 'http://localhost:8080/userNames?startsWith=%E3%82%BF'
+
+  /userNames/{id}:
+    get:
+      summary: 指定したIDの従業員情報を取得するAPI
+      description: 指定したIDに対応する従業員情報を取得します。
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 指定したIDの従業員情報を返す
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '404':
+          description: 該当する従業員が存在しない場合のエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-code-samples:
+        - lang: curl
+          source: |
+            curl --location 'http://localhost:8080/userNames/1'
+
+components:
+  schemas:
+    BodyData:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "タナカ　イチロウ"
+        age:
+          type: integer
+          example: 20
+        height:
+          type: number
+          format: float
+          example: 171.5
+        weight:
+          type: number
+          format: float
+          example: 60.2
