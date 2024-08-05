@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DBRider
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-public class integrationTest {
+public class IntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
