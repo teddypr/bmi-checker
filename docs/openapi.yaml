@@ -1,10 +1,10 @@
 openapi: 3.0.0
+servers:
+  - url: "https://teddypr.github.io/bmi-checker/"
 info:
   title: bmi-checker
   description: 従業員のボディデータ情報（age, height, weight）を管理するAPIです。
   version: 1.0.0
-servers:
-  - url: https://teddypr.github.io/bmi-checker/
 tags:
   - name: "従業員情報を取得する"
     description: "全件取得・ID検索・名前検索"
