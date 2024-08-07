@@ -27,7 +27,7 @@ class BmiMapperTest {
     private BmiMapper bmiMapper;
 
     @Test
-    @DataSet(value = "datasets/bodydatas.yml")
+    @DataSet(value = "datasets/bodydata.yml")
     void 全ての従業員情報が正常に返されること() {
         List<BodyData> bodyDataList = bmiMapper.findAll();
         assertThat(bodyDataList).hasSize(4);
@@ -40,7 +40,7 @@ class BmiMapperTest {
     }
 
     @Test
-    @DataSet(value = "datasets/bodydatas.yml")
+    @DataSet(value = "datasets/bodydata.yml")
     void 指定した名前の頭文字で従業員情報が正常に返されること() {
         List<BodyData> bodyDataList = bmiMapper.findByNameStartingWith("タ");
         assertThat(bodyDataList).hasSize(2);
@@ -51,14 +51,14 @@ class BmiMapperTest {
     }
 
     @Test
-    @DataSet(value = "datasets/bodydatas.yml")
+    @DataSet(value = "datasets/bodydata.yml")
     void 指定したIDの従業員情報を取得できること() {
         Optional<BodyData> actual = bmiMapper.findById(1);
         assertThat(actual).hasValue(new BodyData(1, "タナカ　イチロウ", 20, 171.5, 60.2));
     }
 
     @Test
-    @DataSet(value = "datasets/bodydatas.yml")
+    @DataSet(value = "datasets/bodydata.yml")
     @ExpectedDataSet(value = "datasets/expectedInsertBodyData.yml", ignoreCols = "id")
     void 新規従業員情報が正常に挿入できること() {
         BodyData newBodyData = new BodyData(null, "トヨタ トミ", 26, 163.4, 53.3);
@@ -69,7 +69,7 @@ class BmiMapperTest {
     }
 
     @Test
-    @DataSet(value = "datasets/bodydatas.yml")
+    @DataSet(value = "datasets/bodydata.yml")
     @ExpectedDataSet(value = "datasets/expectedUpdatedBodyData.yml")
     void 従業員情報が正常に更新できること() {
         BodyData existingBodyData = new BodyData(2, "スズキ ジロウ", 18, 181.0, 88.0);
@@ -82,7 +82,7 @@ class BmiMapperTest {
     }
 
     @Test
-    @DataSet(value = "datasets/bodydatas.yml")
+    @DataSet(value = "datasets/bodydata.yml")
     @ExpectedDataSet(value = "datasets/expectedDeletedBodyData.yml")
     void 指定したIDの従業員情報が正常に削除できること() {
         bmiMapper.delete(1);
