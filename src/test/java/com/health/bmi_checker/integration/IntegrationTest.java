@@ -102,7 +102,6 @@ public class IntegrationTest {
 
         @Test
         @DataSet(value = "datasets/bodydata.yml")
-        @Transactional
         void 存在しない名前を指定したとき404エラーを返すこと() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.get("/userNames?startsWith=ン"))
                     .andExpect(MockMvcResultMatchers.status().isNotFound())
@@ -132,7 +131,6 @@ public class IntegrationTest {
 
         @Test
         @DataSet(value = "datasets/bodydata.yml")
-        @Transactional
         void 存在しないIDを指定したとき404エラーを返すこと() throws Exception {
 
             mockMvc.perform(MockMvcRequestBuilders.get("/userNames/0"))
@@ -255,7 +253,6 @@ public class IntegrationTest {
 
         @Test
         @DataSet(value = "datasets/bodydata.yml")
-        @Transactional
         void 存在しないIDでユーザーの更新をしようとすると404エラーを返すこと() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.delete("/BMIs/100"))
                     .andExpect(MockMvcResultMatchers.status().isNotFound())
