@@ -102,12 +102,12 @@ public class IntegrationTest {
 
         @Test
         @DataSet(value = "datasets/bodydata.yml")
-        void 存在しない名前を指定したとき404エラーを返すこと() throws Exception {
+        void 存在しない名前を指定したとき200OKでmessageを返すこと() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.get("/userNames?startsWith=ン"))
-                    .andExpect(MockMvcResultMatchers.status().isNotFound())
+                    .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("404"))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Not Found"))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("200"))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("OK"))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("該当する従業員は存在しません"))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.path").value("/userNames"));
         }
@@ -195,7 +195,7 @@ public class IntegrationTest {
         }
 
         @Test
-        void 同姓同名の従業員が登録されたとき409エラーを返すこと() throws Exception {
+        void 同姓同名の従業員が登録されたとき422エラーを返すこと() throws Exception {
             // テストデータの準備（同姓同名の従業員）
             String duplicateRequestBody = """
                     {
