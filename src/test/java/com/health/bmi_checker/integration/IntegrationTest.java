@@ -216,7 +216,7 @@ public class IntegrationTest {
             mockMvc.perform(MockMvcRequestBuilders.post("/BMIs")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(duplicateRequestBody))
-                    .andExpect(MockMvcResultMatchers.status().isConflict())
+                    .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity())
                     .andExpect(MockMvcResultMatchers.content().json("""
                                     {
                                         "message": "同姓同名の従業員が既に存在します"
