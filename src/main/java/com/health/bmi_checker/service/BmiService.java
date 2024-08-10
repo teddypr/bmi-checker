@@ -1,6 +1,5 @@
 package com.health.bmi_checker.service;
 
-import com.health.bmi_checker.controller.exceptionHandler.AcronymNotFoundException;
 import com.health.bmi_checker.controller.exceptionHandler.DataNotFoundException;
 import com.health.bmi_checker.controller.exceptionHandler.DuplicateNameException;
 import com.health.bmi_checker.entity.BodyData;
@@ -44,11 +43,7 @@ public class BmiService {
 
     //クエリ文字で部分一致検索
     public List<BodyData> findAcronym(String startsWith) {
-        List<BodyData> bodyDataList = bmiMapper.findByNameStartingWith(startsWith);
-        if (bodyDataList.isEmpty()) {
-            throw new AcronymNotFoundException("該当する従業員は存在しません");
-        }
-        return bodyDataList;
+        return bmiMapper.findByNameStartingWith(startsWith);
     }
 
     //Id で従業員を検索

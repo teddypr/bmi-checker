@@ -16,19 +16,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class BmicheckerApiExceptionHandler {
 
-    // 存在しない従業員データが検索された時、ステータスコード 200 message を返す
-    @ExceptionHandler(AcronymNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleAcronymNotFoundException(
-            AcronymNotFoundException e, HttpServletRequest request) {
-        Map<String, String> body = Map.of(
-                "timestamp", ZonedDateTime.now().toString(),
-                "status", String.valueOf(HttpStatus.OK.value()),
-                "error", HttpStatus.OK.getReasonPhrase(),
-                "message", e.getMessage(),
-                "path", request.getRequestURI());
-        return new ResponseEntity(body, HttpStatus.OK);
-    }
-
     // 存在しない従業員データが検索された時、ステータスコード 404 を返す
     @ExceptionHandler(DataNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleDataNotFoundException(

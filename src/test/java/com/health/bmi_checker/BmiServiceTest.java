@@ -17,7 +17,6 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -80,27 +79,6 @@ public class BmiServiceTest {
         //スタブの呼び出しを検証
         verify(bmiMapper, times(1)).findByNameStartingWith("タ");
     }
-
-
-    @Test
-    public void 存在しない名前の頭文字を指定した時に例外が発生すること() {
-        //Arrange
-        String startsWith = "ン";
-
-        when(bmiMapper.findByNameStartingWith(startsWith)).thenReturn(Arrays.asList());
-
-        // Assert ＆ Act
-        DataNotFoundException thrown = assertThrows(
-                DataNotFoundException.class,
-                () -> bmiService.findAcronym(startsWith)
-        );
-
-        assertEquals("該当する従業員は存在しません", thrown.getMessage());
-
-        // スタブの呼び出しを検証
-        verify(bmiMapper, times(1)).findByNameStartingWith("ン");
-    }
-
 
     @Test
     public void 存在するIDを指定した時に正常に従業員情報が返されること() {

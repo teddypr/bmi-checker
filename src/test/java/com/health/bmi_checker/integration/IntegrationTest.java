@@ -102,18 +102,6 @@ public class IntegrationTest {
 
         @Test
         @DataSet(value = "datasets/bodydata.yml")
-        void 存在しない名前を指定したとき200OKでmessageを返すこと() throws Exception {
-            mockMvc.perform(MockMvcRequestBuilders.get("/userNames?startsWith=ン"))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("200"))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("OK"))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("該当する従業員は存在しません"))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.path").value("/userNames"));
-        }
-
-        @Test
-        @DataSet(value = "datasets/bodydata.yml")
         void 指定したIDの従業員情報を取得できること() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.get("/userNames/1")).andExpect(MockMvcResultMatchers.status().isOk())
 
