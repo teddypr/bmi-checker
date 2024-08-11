@@ -30,23 +30,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    age:
-                      type: integer
-                    height:
-                      type: number
-                      format: float
-                    weight:
-                      type: number
-                      format: float
-                    bmi:
-                      type: number
-                      format: float
+                  $ref: '#/components/schemas/BodyData'
               example:
                 - id: 1
                   name: "タナカ　イチロウ"
@@ -82,18 +66,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                age:
-                  type: integer
-                height:
-                  type: number
-                  format: float
-                weight:
-                  type: number
-                  format: float
+              $ref: '#/components/schemas/BodyData'
             example:
               name: "トヨタ トミ"
               age: 26
@@ -111,29 +84,6 @@ paths:
                     type: string
               example:
                 message: "従業員情報 登録完了"
-        '409':
-          description: "Conflict"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  path:
-                    type: string
-                  error:
-                    type: string
-                  timestamp:
-                    type: string
-                  message:
-                    type: string
-              example:
-                status: "409"
-                path: "/BMIs"
-                error: "Conflict"
-                timestamp: "2024-07-15T22:46:24.616755+09:00"
-                message: "同姓同名の従業員が既に存在します"
         '400':
           description: "Bad Request"
           content:
@@ -177,23 +127,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    age:
-                      type: integer
-                    height:
-                      type: number
-                      format: float
-                    weight:
-                      type: number
-                      format: float
-                    bmi:
-                      type: number
-                      format: float
+                  $ref: '#/components/schemas/BodyData'
               example:
                 - id: 1
                   name: "タナカ　イチロウ"
@@ -251,23 +185,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  age:
-                    type: integer
-                  height:
-                    type: number
-                    format: float
-                  weight:
-                    type: number
-                    format: float
-                  bmi:
-                    type: number
-                    format: float
+                $ref: '#/components/schemas/BodyData'
               example:
                 id: 1
                 name: "タナカ　イチロウ"
@@ -318,18 +236,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                age:
-                  type: integer
-                height:
-                  type: number
-                  format: float
-                weight:
-                  type: number
-                  format: float
+              $ref: '#/components/schemas/BodyData'
             example:
               name: "Updated Name"
               age: 18
@@ -370,6 +277,27 @@ paths:
                 message: "存在しない従業員 ID です: 100"
                 status: "404"
                 path: "/BMIs/100"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                  status:
+                    type: string
+                  error:
+                    type: string
+                  path:
+                    type: string
+              example:
+                timestamp: "2024-07-15T13:53:24.763+00:00"
+                status: "400"
+                error: "Bad Request"
+                path: "/BMIs/1"
+
     delete:
       tags:
         - "従業員情報を削除する"
@@ -384,17 +312,8 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "従業員情報 削除完了"
+        '204':
+          description: "No Content"
         '404':
           description: "Not Found"
           content:
@@ -404,20 +323,21 @@ paths:
                 properties:
                   error:
                     type: string
-                  path:
-                    type: string
-                  status:
+                  timestamp:
                     type: string
                   message:
                     type: string
-                  timestamp:
+                  status:
+                    type: string
+                  path:
                     type: string
               example:
                 error: "Not Found"
-                path: "/BMIs/100"
-                status: "404"
+                timestamp: "2024-07-21T23:32:28.013531+09:00"
                 message: "存在しない従業員 ID です: 100"
-                timestamp: "2024-07-21T22:57:39.008982+09:00"
+                status: "404"
+                path: "/BMIs/100"
+
 components:
   schemas:
     BodyData:
@@ -425,18 +345,21 @@ components:
       properties:
         id:
           type: integer
-          example: 1
         name:
           type: string
-          example: "タナカ　イチロウ"
+          description: "従業員の氏名"
         age:
           type: integer
-          example: 20
+          description: "従業員の年齢"
         height:
           type: number
           format: float
-          example: 171.5
+          description: "従業員の身長 (cm)"
         weight:
           type: number
           format: float
-          example: 60.2
+          description: "従業員の体重 (kg)"
+        bmi:
+          type: number
+          format: float
+          description: "従業員のBMI値"
