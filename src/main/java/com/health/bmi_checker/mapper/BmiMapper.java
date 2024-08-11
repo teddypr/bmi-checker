@@ -26,6 +26,14 @@ public interface BmiMapper {
     @Select("SELECT * FROM bmis WHERE id = #{id}")
     Optional<BodyData> findById(int id);
 
+    //名前の重複チェック（登録用）
+    @Select("SELECT * FROM bmis WHERE name = #{name}")
+    Optional<BodyData> findByName(String name);
+
+    //名前の重複チェック（更新用）
+    @Select("SELECT * FROM bmis WHERE name = #{name} AND id != #{id}")
+    Optional<BodyData> findByNameAndNotId(String name, int id);
+
     //インサート用
     @Insert("INSERT INTO bmis (name, age, height, weight) VALUES (#{name}, #{age}, #{height}, #{weight})")
     @Options(useGeneratedKeys = true, keyProperty = "id")

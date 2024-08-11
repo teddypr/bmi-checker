@@ -42,17 +42,17 @@ public class BmicheckerApiExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    // 同姓同名の従業員が登録された時、ステータスコード 422 を返す
+    // 同姓同名の従業員が登録・更新された時、ステータスコード 400 を返す
     @ExceptionHandler(DuplicateNameException.class)
     public ResponseEntity<Map<String, String>> handleDuplicateDataException(
             DuplicateNameException e, HttpServletRequest request) {
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),
-                "status", String.valueOf(HttpStatus.UNPROCESSABLE_ENTITY.value()),
-                "error", HttpStatus.UNPROCESSABLE_ENTITY.getReasonPhrase(),
+                "status", String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                "error", HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "message", e.getMessage(),
                 "path", request.getRequestURI());
-        return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
 }
