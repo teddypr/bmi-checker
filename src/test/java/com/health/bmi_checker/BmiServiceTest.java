@@ -133,6 +133,23 @@ public class BmiServiceTest {
 
     }
 
+    @Test
+    public void 重複する名前で登録しようとした時に例外が発生すること() {
+        // Arrange
+        BodyData existingBodyData = new BodyData(1, "トヨタ トミ", 26, 163.4, 53.3);
+        doReturn(Optional.of(existingBodyData)).when(bmiMapper).findByName("トヨタ トミ");
+
+        // Assert & Act
+        assertThatThrownBy(() -> bmiService.insert("トヨタ トミ", 26, 163.4, 53.3))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("同姓同名の従業員が既に存在します");
+
+        // スタブの呼び出しを検証
+        verify(bmiMapper, times(1)).findByName("トヨタ トミ");
+        verify(bmiMapper, times(0)).insert(any(BodyData.class));
+    }
+
+
     /**
      * Update処理テスト
      */
@@ -171,6 +188,25 @@ public class BmiServiceTest {
         verify(bmiMapper, times(0)).update(any(BodyData.class));
 
     }
+
+    @Test
+    public void 更新時に重複する名前でエラーが発生すること() {
+        // Arrange
+        BodyData existingBodyData = new BodyData(1, "トヨタ トミ", 26, 163.4, 53.3);
+        doReturn(Optional.of(existingBodyData)).when(bmiMapper).findById(2);
+        doReturn(Optional.of(new BodyData(3, "トヨタ トミ", 30, 170.0, 70.0))).when(bmiMapper).findByName("トヨタ トミ");
+
+        // Assert & Act
+        assertThatThrownBy(() -> bmiService.update(2, "トヨタ トミ", 30, 170.0, 70.0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("同姓同名の従業員が既に存在します");
+
+        // スタブの呼び出しを検証
+        verify(bmiMapper, times(1)).findById(2);
+        verify(bmiMapper, times(1)).findByName("トヨタ トミ");
+        verify(bmiMapper, times(0)).update(any(BodyData.class));
+    }
+
 
     /**
      * Delete処理テスト
