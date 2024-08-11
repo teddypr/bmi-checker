@@ -183,7 +183,7 @@ public class IntegrationTest {
         }
 
         @Test
-        void 同姓同名の従業員が登録されたとき422エラーを返すこと() throws Exception {
+        void 同姓同名の従業員が登録されたとき400エラーを返すこと() throws Exception {
             // テストデータの準備（同姓同名の従業員）
             String duplicateRequestBody = """
                     {
@@ -251,6 +251,29 @@ public class IntegrationTest {
                     .andExpect(MockMvcResultMatchers.jsonPath("$.path").value("/BMIs/100"));
 
         }
+
+        @Test
+        @DataSet(value = "datasets/bodydata.yml")
+        void 同じ名前の従業員が既に存在する場合400エラーを返すこと() throws Exception {
+            String duplicateRequestBody = """
+                    {
+                            "name": "タナカ　イチロウ",
+                            "age": 30,
+                            "height": 170.0,
+                            "weight": 65.0
+                    }
+                    """;
+
+            mockMvc.perform(MockMvcRequestBuilders.patch("/BMIs/3")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(duplicateRequestBody))
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                    .andExpect(MockMvcResultMatchers.content().json("""
+                            {
+                                "message": "同姓同名の従業員が既に存在します"
+                            }
+                            """));
+        }
     }
 
     @Nested
@@ -282,4 +305,3 @@ public class IntegrationTest {
     }
 
 }
-
