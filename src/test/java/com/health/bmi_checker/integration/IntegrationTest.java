@@ -187,7 +187,7 @@ public class IntegrationTest {
             // テストデータの準備（同姓同名の従業員）
             String duplicateRequestBody = """
                     {
-                            "name": "ヤマダ　タロウ",
+                            "name": "タナカ　イチロウ",
                             "age": 34,
                             "height": 175.5,
                             "weight": 73
@@ -198,13 +198,13 @@ public class IntegrationTest {
             mockMvc.perform(MockMvcRequestBuilders.post("/BMIs")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(duplicateRequestBody))
-                    .andExpect(MockMvcResultMatchers.status().isCreated());
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
             // 同じデータで再度登録
             mockMvc.perform(MockMvcRequestBuilders.post("/BMIs")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(duplicateRequestBody))
-                    .andExpect(MockMvcResultMatchers.status().isUnprocessableEntity())
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest())
                     .andExpect(MockMvcResultMatchers.content().json("""
                                     {
                                         "message": "同姓同名の従業員が既に存在します"
