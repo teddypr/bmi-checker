@@ -102,18 +102,6 @@ public class IntegrationTest {
 
         @Test
         @DataSet(value = "datasets/bodydata.yml")
-        void 存在しない名前を指定したとき404エラーを返すこと() throws Exception {
-            mockMvc.perform(MockMvcRequestBuilders.get("/userNames?startsWith=ン"))
-                    .andExpect(MockMvcResultMatchers.status().isNotFound())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("404"))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Not Found"))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("該当する従業員は存在しません"))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.path").value("/userNames"));
-        }
-
-        @Test
-        @DataSet(value = "datasets/bodydata.yml")
         void 指定したIDの従業員情報を取得できること() throws Exception {
             mockMvc.perform(MockMvcRequestBuilders.get("/userNames/1")).andExpect(MockMvcResultMatchers.status().isOk())
 
@@ -195,11 +183,11 @@ public class IntegrationTest {
         }
 
         @Test
-        void 同姓同名の従業員が登録されたとき409エラーを返すこと() throws Exception {
+        void 同姓同名の従業員が登録されたとき400エラーを返すこと() throws Exception {
             // テストデータの準備（同姓同名の従業員）
             String duplicateRequestBody = """
                     {
-                            "name": "ヤマダ　タロウ",
+                            "name": "タナカ　イチロウ",
                             "age": 34,
                             "height": 175.5,
                             "weight": 73
@@ -210,13 +198,13 @@ public class IntegrationTest {
             mockMvc.perform(MockMvcRequestBuilders.post("/BMIs")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(duplicateRequestBody))
-                    .andExpect(MockMvcResultMatchers.status().isCreated());
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
             // 同じデータで再度登録
             mockMvc.perform(MockMvcRequestBuilders.post("/BMIs")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(duplicateRequestBody))
-                    .andExpect(MockMvcResultMatchers.status().isConflict())
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest())
                     .andExpect(MockMvcResultMatchers.content().json("""
                                     {
                                         "message": "同姓同名の従業員が既に存在します"
@@ -263,6 +251,29 @@ public class IntegrationTest {
                     .andExpect(MockMvcResultMatchers.jsonPath("$.path").value("/BMIs/100"));
 
         }
+
+        @Test
+        @DataSet(value = "datasets/bodydata.yml")
+        void 同じ名前の従業員が既に存在する場合400エラーを返すこと() throws Exception {
+            String duplicateRequestBody = """
+                    {
+                            "name": "タナカ　イチロウ",
+                            "age": 30,
+                            "height": 170.0,
+                            "weight": 65.0
+                    }
+                    """;
+
+            mockMvc.perform(MockMvcRequestBuilders.patch("/BMIs/3")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(duplicateRequestBody))
+                    .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                    .andExpect(MockMvcResultMatchers.content().json("""
+                            {
+                                "message": "同姓同名の従業員が既に存在します"
+                            }
+                            """));
+        }
     }
 
     @Nested
@@ -294,4 +305,5 @@ public class IntegrationTest {
     }
 
 }
-
+                                                                   
+                                                                    

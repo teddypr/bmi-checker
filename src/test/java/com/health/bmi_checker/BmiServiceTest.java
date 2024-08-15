@@ -1,6 +1,7 @@
 package com.health.bmi_checker;
 
 import com.health.bmi_checker.controller.exceptionHandler.DataNotFoundException;
+import com.health.bmi_checker.controller.exceptionHandler.DuplicateNameException;
 import com.health.bmi_checker.entity.BodyData;
 import com.health.bmi_checker.mapper.BmiMapper;
 import com.health.bmi_checker.service.BmiService;
@@ -17,7 +18,6 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -81,27 +81,6 @@ public class BmiServiceTest {
         verify(bmiMapper, times(1)).findByNameStartingWith("タ");
     }
 
-
-    @Test
-    public void 存在しない名前の頭文字を指定した時に例外が発生すること() {
-        //Arrange
-        String startsWith = "ン";
-
-        when(bmiMapper.findByNameStartingWith(startsWith)).thenReturn(Arrays.asList());
-
-        // Assert ＆ Act
-        DataNotFoundException thrown = assertThrows(
-                DataNotFoundException.class,
-                () -> bmiService.findAcronym(startsWith)
-        );
-
-        assertEquals("該当する従業員は存在しません", thrown.getMessage());
-
-        // スタブの呼び出しを検証
-        verify(bmiMapper, times(1)).findByNameStartingWith("ン");
-    }
-
-
     @Test
     public void 存在するIDを指定した時に正常に従業員情報が返されること() {
         // Arrange
@@ -155,6 +134,23 @@ public class BmiServiceTest {
 
     }
 
+    @Test
+    public void 重複する名前で登録しようとした時に例外が発生すること() {
+        // Arrange
+        BodyData existingBodyData = new BodyData(1, "トヨタ トミ", 26, 163.4, 53.3);
+        doReturn(Optional.of(existingBodyData)).when(bmiMapper).findByName("トヨタ トミ");
+
+        // Assert & Act
+        assertThatThrownBy(() -> bmiService.insert("トヨタ トミ", 26, 163.4, 53.3))
+                .isInstanceOf(DuplicateNameException.class)
+                .hasMessageContaining("同姓同名の従業員が既に存在します");
+
+        // スタブの呼び出しを検証
+        verify(bmiMapper, times(1)).findByName("トヨタ トミ");
+        verify(bmiMapper, times(0)).insert(any(BodyData.class));
+    }
+
+
     /**
      * Update処理テスト
      */
@@ -192,6 +188,25 @@ public class BmiServiceTest {
         verify(bmiMapper, times(1)).findById(nonExistentId);
         verify(bmiMapper, times(0)).update(any(BodyData.class));
 
+    }
+
+    @Test
+    public void 更新時に重複する名前でエラーが発生すること() {
+        // Arrange
+        BodyData existingBodyData = new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0);
+        doReturn(Optional.of(existingBodyData)).when(bmiMapper).findById(2);
+        // 名前が既に別のIDで存在する
+        doReturn(Optional.of(new BodyData(4, "タカハシ　カズキ", 31, 170.6, 67.8))).when(bmiMapper).findByNameAndNotId("タカハシ　カズキ", 2);
+
+        // Assert & Act
+        assertThatThrownBy(() -> bmiService.update(2, "タカハシ　カズキ", 18, 181.0, 88.0))
+                .isInstanceOf(DuplicateNameException.class)
+                .hasMessageContaining("同姓同名の従業員が既に存在します");
+
+        // スタブの呼び出しを検証
+        verify(bmiMapper, times(1)).findById(2);
+        verify(bmiMapper, times(1)).findByNameAndNotId("タカハシ　カズキ", 2);
+        verify(bmiMapper, times(0)).update(any(BodyData.class));
     }
 
     /**

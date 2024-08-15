@@ -21,7 +21,7 @@ public class BmiService {
 
     // bmi 計算
     public double calculateBmi(double height, double weight) {
-        return (weight / (height / 100) * (height / 100));
+        return weight / ((height / 100) * (height / 100));
     }
 
     public List<BodyData> BMIs() {
@@ -43,11 +43,7 @@ public class BmiService {
 
     //クエリ文字で部分一致検索
     public List<BodyData> findAcronym(String startsWith) {
-        List<BodyData> bodyDataList = bmiMapper.findByNameStartingWith(startsWith);
-        if (bodyDataList.isEmpty()) {
-            throw new DataNotFoundException("該当する従業員は存在しません");
-        }
-        return bodyDataList;
+        return bmiMapper.findByNameStartingWith(startsWith);
     }
 
     //Id で従業員を検索
@@ -65,13 +61,9 @@ public class BmiService {
      */
     public BodyData insert(String name, int age, double height, double weight) {
         // 同姓同名の確認
-        List<BodyData> existingData = findAll();
-        for (BodyData data : existingData) {
-            if (data.getName().equals(name)) {
-                throw new DuplicateNameException("同姓同名の従業員が既に存在します");
-            }
+        if (bmiMapper.findByName(name).isPresent()) {
+            throw new DuplicateNameException("同姓同名の従業員が既に存在します");
         }
-
         BodyData bodyData = new BodyData(name, age, height, weight);
         bmiMapper.insert(bodyData);
         return bodyData;
@@ -81,8 +73,17 @@ public class BmiService {
      * 従業員情報に関する Update 処理を行う
      */
     public BodyData update(int id, String name, Integer age, Double height, Double weight) {
-        BodyData bodyData = this.bmiMapper.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("存在しない従業員 ID です: " + id));
+        BodyData bodyData = this.bmiMapper.findById(id).orElseThrow(() -> new DataNotFoundException("存在しない従業員 ID です: " + id));
+
+        // 名前が変更された場合の重複チェック
+        if (name != null && !bodyData.getName().equals(name)) {
+            boolean duplicateNameExists = bmiMapper.findByNameAndNotId(name, id)
+                    .isPresent();
+
+            if (duplicateNameExists) {
+                throw new DuplicateNameException("同姓同名の従業員が既に存在します");
+            }
+        }
 
         if (name != null) {
             bodyData.setName(name);
@@ -105,8 +106,7 @@ public class BmiService {
      * 従業員情報に関する Delete 処理を行う
      */
     public BodyData delete(int id) {
-        BodyData bodyData = this.bmiMapper.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("存在しない従業員 ID です: " + id));
+        BodyData bodyData = this.bmiMapper.findById(id).orElseThrow(() -> new DataNotFoundException("存在しない従業員 ID です: " + id));
         bmiMapper.delete(id);
         return bodyData;
     }
