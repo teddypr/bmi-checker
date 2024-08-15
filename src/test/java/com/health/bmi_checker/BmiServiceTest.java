@@ -1,6 +1,7 @@
 package com.health.bmi_checker;
 
 import com.health.bmi_checker.controller.exceptionHandler.DataNotFoundException;
+import com.health.bmi_checker.controller.exceptionHandler.DuplicateNameException;
 import com.health.bmi_checker.entity.BodyData;
 import com.health.bmi_checker.mapper.BmiMapper;
 import com.health.bmi_checker.service.BmiService;
@@ -141,7 +142,7 @@ public class BmiServiceTest {
 
         // Assert & Act
         assertThatThrownBy(() -> bmiService.insert("トヨタ トミ", 26, 163.4, 53.3))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(DuplicateNameException.class)
                 .hasMessageContaining("同姓同名の従業員が既に存在します");
 
         // スタブの呼び出しを検証
@@ -192,21 +193,21 @@ public class BmiServiceTest {
     @Test
     public void 更新時に重複する名前でエラーが発生すること() {
         // Arrange
-        BodyData existingBodyData = new BodyData(1, "トヨタ トミ", 26, 163.4, 53.3);
+        BodyData existingBodyData = new BodyData(2, "スズキ　ジロウ", 18, 181.0, 88.0);
         doReturn(Optional.of(existingBodyData)).when(bmiMapper).findById(2);
-        doReturn(Optional.of(new BodyData(3, "トヨタ トミ", 30, 170.0, 70.0))).when(bmiMapper).findByName("トヨタ トミ");
+        // 名前が既に別のIDで存在する
+        doReturn(Optional.of(new BodyData(4, "タカハシ　カズキ", 31, 170.6, 67.8))).when(bmiMapper).findByNameAndNotId("タカハシ　カズキ", 2);
 
         // Assert & Act
-        assertThatThrownBy(() -> bmiService.update(2, "トヨタ トミ", 30, 170.0, 70.0))
-                .isInstanceOf(IllegalArgumentException.class)
+        assertThatThrownBy(() -> bmiService.update(2, "タカハシ　カズキ", 18, 181.0, 88.0))
+                .isInstanceOf(DuplicateNameException.class)
                 .hasMessageContaining("同姓同名の従業員が既に存在します");
 
         // スタブの呼び出しを検証
         verify(bmiMapper, times(1)).findById(2);
-        verify(bmiMapper, times(1)).findByName("トヨタ トミ");
+        verify(bmiMapper, times(1)).findByNameAndNotId("タカハシ　カズキ", 2);
         verify(bmiMapper, times(0)).update(any(BodyData.class));
     }
-
 
     /**
      * Delete処理テスト
