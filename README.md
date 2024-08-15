@@ -106,5 +106,4 @@ sequenceDiagram
 
 - BmiService の単体テスト
 - BmiMapperのDBテスト
-- BmiIntegrationテスト（結合テスト）
-- GitHub Actions
+- BmiIntegrationテスト(結合テスト)の実装
